@@ -94,26 +94,10 @@ function drawGame() {
     background(seasonColors[season].bg);
   }
 
-  fill(0, 0, 0, 100);
-  rect(0, 0, width, height);
-
   textSize(32);
   fill(255);
   stroke(0);
   strokeWeight(2);
-  text(
-    `${
-      selectedSeason === "spring"
-        ? "봄"
-        : selectedSeason === "summer"
-        ? "여름"
-        : selectedSeason === "fall"
-        ? "가을"
-        : "겨울"
-    } 게임 시작!`,
-    width / 2,
-    height / 2
-  );
 
   textSize(16);
   text("스페이스바를 눌러 계절 선택으로 돌아가기", width / 2, height / 2 + 50);
