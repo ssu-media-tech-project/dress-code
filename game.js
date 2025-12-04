@@ -178,10 +178,10 @@ function renderMannequin(여자마네킹, 남자마네킹) {
       ) {
         let clothImage = clothImages[selectedSex][cloth.category][cloth.imageId];
 
-        let clothY = mannequinY + mannequinHeight * 0.11; // 상의 위치 조정
-        let clothWidth = mannequinWidth * 1.15; // 상의를 아주 조금 작게
+        let clothY = mannequinY - 30; // 상의 위치 조정
+        let clothWidth = mannequinWidth * 1.4; // 상의를 아주 조금 작게
         let clothHeight = (clothImage.height / clothImage.width) * clothWidth;
-        let clothX = mannequinX + (mannequinWidth - clothWidth) / 2 - 10; // 살짝 왼쪽으로
+        let clothX = mannequinX + (mannequinWidth - clothWidth) / 2 - 1; // 살짝 왼쪽으로
 
         image(clothImage, clothX, clothY, clothWidth, clothHeight);
       }
