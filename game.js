@@ -156,12 +156,19 @@ function renderMannequin(여자마네킹, 남자마네킹) {
         clothImages[selectedSex][cloth.category] &&
         clothImages[selectedSex][cloth.category][cloth.imageId]
       ) {
-        let clothImage = clothImages[selectedSex][cloth.category][cloth.imageId];
+        let clothImage =
+          clothImages[selectedSex][cloth.category][cloth.imageId];
 
         let clothY = mannequinY;
         let clothWidth = mannequinWidth;
         let clothHeight = mannequinHeight;
         let clothX = mannequinX;
+
+        // 성별에 따라 하의 X 위치 조정
+        let clothX =
+          selectedSex === "female"
+            ? mannequinX + (mannequinWidth - clothWidth) / 2 - 5 // 여자는 왼쪽으로
+            : mannequinX + (mannequinWidth - clothWidth) / 2; // 남자는 기존 위치
 
         image(clothImage, clothX, clothY, clothWidth, clothHeight);
       }
@@ -176,12 +183,19 @@ function renderMannequin(여자마네킹, 남자마네킹) {
         clothImages[selectedSex][cloth.category] &&
         clothImages[selectedSex][cloth.category][cloth.imageId]
       ) {
-        let clothImage = clothImages[selectedSex][cloth.category][cloth.imageId];
+        let clothImage =
+          clothImages[selectedSex][cloth.category][cloth.imageId];
 
         let clothY = mannequinY;
         let clothWidth = mannequinWidth;
         let clothHeight = mannequinHeight;
         let clothX = mannequinX;
+
+        // 성별에 따라 상의 X 위치 조정
+        let clothX =
+          selectedSex === "female"
+            ? mannequinX + (mannequinWidth - clothWidth) / 2 + 5 // 여자는 오른쪽으로
+            : mannequinX + (mannequinWidth - clothWidth) / 2 - 10; // 남자는 기존 위치 (살짝 왼쪽)
 
         image(clothImage, clothX, clothY, clothWidth, clothHeight);
       }
@@ -206,7 +220,7 @@ function drawWardrobeModal(closetImage) {
   if (closetImage && closetImage.width > 0) {
     // 옷장 이미지를 모달 크기에 맞게 조정하여 배경으로 사용
     image(closetImage, modalX, modalY, modalWidth, modalHeight);
-    
+
     // 반투명 오버레이 (가독성을 위해)
     fill(255, 255, 255, 180);
     noStroke();
@@ -312,35 +326,35 @@ function drawClothesGrid(categories, modalX, modalY, modalWidth, modalHeight) {
     let itemSpacing = 20;
     let startX = modalX + 30;
     let itemsPerRow = Math.floor((modalWidth - 80) / (itemWidth + itemSpacing)); // 스크롤바 공간 확보
-    
+
     // 전체 행 수 계산
     let totalRows = Math.ceil(categoryClothes.length / itemsPerRow);
     let totalContentHeight = totalRows * (itemHeight + itemSpacing);
-    
+
     // 최대 스크롤 오프셋 계산
     maxScrollOffset = Math.max(0, totalContentHeight - contentHeight);
-    
+
     // 스크롤 오프셋 제한
     scrollOffset = constrain(scrollOffset, 0, maxScrollOffset);
-    
+
     // 클리핑 영역 설정 (스크롤 가능한 영역)
     let clipX = modalX;
     let clipY = contentY;
     let clipWidth = modalWidth;
     let clipHeight = contentHeight;
-    
+
     // 스크롤된 위치에서 시작
     let scrolledContentY = contentY - scrollOffset;
-    
+
     // 현재 보이는 영역에 있는 아이템만 그리기 (성능 최적화)
     for (let i = 0; i < categoryClothes.length; i++) {
       let row = Math.floor(i / itemsPerRow);
       let col = i % itemsPerRow;
-      
+
       let itemX = startX + col * (itemWidth + itemSpacing);
       let itemY = scrolledContentY + row * (itemHeight + itemSpacing);
       let cloth = categoryClothes[i];
-      
+
       // 화면에 보이는 아이템만 그리기
       if (itemY + itemHeight >= clipY && itemY <= clipY + clipHeight) {
         // 선택된 옷인지 확인
@@ -375,11 +389,12 @@ function drawClothesGrid(categories, modalX, modalY, modalWidth, modalHeight) {
           isSelected ? 255 : 150
         );
         strokeWeight(isSelected ? 3 : 2);
-        
+
         // 클리핑된 사각형 그리기
         let visibleItemY = Math.max(itemY, clipY);
-        let visibleItemHeight = Math.min(itemY + itemHeight, clipY + clipHeight) - visibleItemY;
-        
+        let visibleItemHeight =
+          Math.min(itemY + itemHeight, clipY + clipHeight) - visibleItemY;
+
         if (visibleItemHeight > 0) {
           rect(itemX, visibleItemY, itemWidth, visibleItemHeight, 10);
 
@@ -390,21 +405,27 @@ function drawClothesGrid(categories, modalX, modalY, modalWidth, modalHeight) {
             clothImages[selectedSex][cloth.category] &&
             clothImages[selectedSex][cloth.category][cloth.imageId]
           ) {
-            let clothImage = clothImages[selectedSex][cloth.category][cloth.imageId];
+            let clothImage =
+              clothImages[selectedSex][cloth.category][cloth.imageId];
             let imgSize = Math.min(itemWidth - 20, itemHeight - 30);
             let imgX = itemX + (itemWidth - imgSize) / 2;
             let imgY = itemY + 10;
 
             // 이미지도 클리핑 적용
             if (imgY + imgSize > clipY && imgY < clipY + clipHeight) {
-              image(clothImage, imgX, Math.max(imgY, clipY), imgSize, 
-                    Math.min(imgSize, clipY + clipHeight - Math.max(imgY, clipY)));
+              image(
+                clothImage,
+                imgX,
+                Math.max(imgY, clipY),
+                imgSize,
+                Math.min(imgSize, clipY + clipHeight - Math.max(imgY, clipY))
+              );
             }
           }
         }
       }
     }
-    
+
     // 스크롤바 그리기
     if (maxScrollOffset > 0) {
       drawScrollbar(modalX, modalY, modalWidth, modalHeight, contentHeight);
@@ -506,22 +527,23 @@ function restartGame() {
 
 // 성별별 옷장 필터링 함수
 function getClothesForGender(gender) {
-  return availableClothes.filter(cloth => cloth.gender === gender);
+  return availableClothes.filter((cloth) => cloth.gender === gender);
 }
 
 // 성별별 카테고리 옷 필터링 함수
 function getClothesForGenderAndCategory(gender, category) {
-  return availableClothes.filter(cloth => 
-    cloth.gender === gender && cloth.category === category
+  return availableClothes.filter(
+    (cloth) => cloth.gender === gender && cloth.category === category
   );
 }
 
 // 성별별 계절 옷 필터링 함수
 function getClothesForGenderSeasonAndCategory(gender, season, category) {
-  return availableClothes.filter(cloth => 
-    cloth.gender === gender && 
-    cloth.category === category && 
-    (cloth.season === season || cloth.season === "universal")
+  return availableClothes.filter(
+    (cloth) =>
+      cloth.gender === gender &&
+      cloth.category === category &&
+      (cloth.season === season || cloth.season === "universal")
   );
 }
 
@@ -531,17 +553,22 @@ function drawScrollbar(modalX, modalY, modalWidth, modalHeight, contentHeight) {
   let scrollbarX = modalX + modalWidth - scrollbarWidth - 10;
   let scrollbarY = modalY + 150; // 탭 아래부터
   let scrollbarHeight = contentHeight;
-  
+
   // 스크롤바 배경
   fill(220, 220, 220);
   noStroke();
   rect(scrollbarX, scrollbarY, scrollbarWidth, scrollbarHeight, 10);
-  
+
   // 스크롤 핸들
   if (maxScrollOffset > 0) {
-    let handleHeight = Math.max(30, (contentHeight / (contentHeight + maxScrollOffset)) * scrollbarHeight);
-    let handleY = scrollbarY + (scrollOffset / maxScrollOffset) * (scrollbarHeight - handleHeight);
-    
+    let handleHeight = Math.max(
+      30,
+      (contentHeight / (contentHeight + maxScrollOffset)) * scrollbarHeight
+    );
+    let handleY =
+      scrollbarY +
+      (scrollOffset / maxScrollOffset) * (scrollbarHeight - handleHeight);
+
     fill(150, 150, 150);
     rect(scrollbarX + 2, handleY, scrollbarWidth - 4, handleHeight, 8);
   }
@@ -568,6 +595,13 @@ function openWardrobe() {
 // 모달이 닫힐 때 스크롤 리셋
 function closeWardrobe() {
   isWardrobeOpen = false;
+  scrollOffset = 0;
+  maxScrollOffset = 0;
+}
+
+// 탭 변경 시 스크롤 리셋
+function changeTab(newTab) {
+  selectedTab = newTab;
   scrollOffset = 0;
   maxScrollOffset = 0;
 }
