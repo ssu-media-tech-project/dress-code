@@ -22,9 +22,9 @@ function preload() {
   // 마네킹 이미지 로드
   여자마네킹 = loadImage("image/마네킹여자.png");
   남자마네킹 = loadImage("image/남자마네킹.png");
-  
+
   // UI 이미지 로드
-  logoImage = loadImage("image/logo.png");
+  logoImage = loadImage("image/logo2.png");
   selectSeasonImage = loadImage("image/select-season.png");
   backgroundImage = loadImage("image/background.png");
   closetImage = loadImage("image/closet.png");
@@ -76,7 +76,21 @@ function draw() {
       drawSexSelection(backgroundImage);
       break;
     case "game":
-      drawGame(seasonImages, 여자마네킹, 남자마네킹);
+      if (showGameOver) {
+        let buttonInfo = drawGameOver(logoImage);
+        // 다시 하기 버튼 클릭 확인
+        if (mouseIsPressed && 
+            mouseX > buttonInfo.btnX && 
+            mouseX < buttonInfo.btnX + buttonInfo.btnWidth &&
+            mouseY > buttonInfo.btnY && 
+            mouseY < buttonInfo.btnY + buttonInfo.btnHeight) {
+          showGameOver = false;
+          gameState = "seasonSelect";
+          initializeGame();
+        }
+      } else {
+        drawGame(seasonImages, 여자마네킹, 남자마네킹);
+      }
       break;
   }
 }
@@ -214,14 +228,15 @@ function handleClothesSelection(modalX, modalY, modalWidth, modalHeight) {
     { name: "하의", key: "bottom" },
     { name: "신발", key: "shoes" },
   ];
-  
+
   let tabHeight = 50;
   let contentY = modalY + 100 + tabHeight + 20;
   let currentCategory = categories.find((cat) => cat.key === selectedTab);
 
   if (currentCategory) {
     let categoryClothes = availableClothes.filter(
-      (cloth) => cloth.category === currentCategory.key && cloth.gender === selectedSex
+      (cloth) =>
+        cloth.category === currentCategory.key && cloth.gender === selectedSex
     );
 
     let itemWidth = 120;
@@ -245,7 +260,7 @@ function handleClothesSelection(modalX, modalY, modalWidth, modalHeight) {
       ) {
         // 이미 선택된 옷인지 확인
         let isAlreadySelected = selectedClothes.some((c) => c.id === cloth.id);
-        
+
         if (isAlreadySelected) {
           // 이미 선택된 옷이면 선택 취소
           selectedClothes = selectedClothes.filter((c) => c.id !== cloth.id);

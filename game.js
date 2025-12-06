@@ -11,6 +11,7 @@ let showScoreResult = false;
 let scoreMessage = "";
 let isGameCompleted = false;
 let selectedTab = "top";
+let showGameOver = false;
 
 // 옷장 모달 관련 변수
 let isWardrobeOpen = false;
@@ -36,6 +37,7 @@ function initializeGame() {
   isGameCompleted = false;
   selectedTab = "top";
   isWardrobeOpen = false;
+  showGameOver = false;
   loadingStartTime = millis();
 
   // 옷 목록 초기화
@@ -497,9 +499,10 @@ function calculateScore() {
   isWardrobeOpen = false;
   isGameCompleted = true;
 
-  // 3초 후 점수 메시지 숨기기
+  // 3초 후 점수 메시지 숨기기 및 게임 종료 화면 표시
   setTimeout(() => {
     showScoreResult = false;
+    showGameOver = true;
   }, 3000);
 }
 
@@ -511,6 +514,7 @@ function restartGame() {
   gameScore = 0;
   showScoreResult = false;
   isWardrobeOpen = false;
+  showGameOver = false;
 }
 
 // 성별별 옷장 필터링 함수

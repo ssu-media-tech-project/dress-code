@@ -15,15 +15,15 @@ const sexColors = {
 
 // 로고 화면 그리기
 function drawLogo(logoImage, loadingStartTime) {
-  // 흰색 배경
-  background(255);
+  // 배경색 #0f0f0f
+  background('#0f0f0f');
 
   // 로고 이미지 표시
   if (logoImage && logoImage.width > 0) {
-    let logoWidth = width * 0.4;
+    let logoWidth = width * 0.25;
     let logoHeight = (logoImage.height / logoImage.width) * logoWidth;
     let logoX = (width - logoWidth) / 2;
-    let logoY = height * 0.05;
+    let logoY = (height - logoHeight) / 2;
 
     image(logoImage, logoX, logoY, logoWidth, logoHeight);
   }
@@ -462,4 +462,49 @@ function drawSelectedClothesPreview(selectedClothes) {
       image(clothImage, imgX, imgY, imgSize, imgSize);
     }
   }
+}
+
+// 게임 종료 화면 그리기
+function drawGameOver(logoImage) {
+  // 배경색 #0f0f0f
+  background('#0f0f0f');
+  
+  // 로고 표시
+  if (logoImage && logoImage.width > 0) {
+    let logoWidth = width * 0.25;
+    let logoHeight = (logoImage.height / logoImage.width) * logoWidth;
+    let logoX = (width - logoWidth) / 2;
+    let logoY = (height - logoHeight) / 2;
+    image(logoImage, logoX, logoY, logoWidth, logoHeight);
+  }
+  
+  // 다시 하기 버튼
+  let btnWidth = 200;
+  let btnHeight = 60;
+  let btnX = width / 2 - btnWidth / 2;
+  let btnY = height * 0.8;
+  
+  // 호버 감지
+  let isHovered = mouseX > btnX && mouseX < btnX + btnWidth &&
+                  mouseY > btnY && mouseY < btnY + btnHeight;
+  
+  // 그림자
+  fill(0, 0, 0, 100);
+  noStroke();
+  rect(btnX + 4, btnY + 4, btnWidth, btnHeight, 15);
+  
+  // 버튼 배경
+  fill(isHovered ? 100 : 80, 200, 100);
+  stroke(50, 150, 50);
+  strokeWeight(3);
+  rect(btnX, btnY, btnWidth, btnHeight, 15);
+  
+  // 버튼 텍스트
+  fill(255, 255, 255);
+  textSize(24);
+  textStyle(BOLD);
+  text("다시 하기", btnX + btnWidth / 2, btnY + btnHeight / 2);
+  textStyle(NORMAL);
+  
+  return { btnX, btnY, btnWidth, btnHeight };
 }

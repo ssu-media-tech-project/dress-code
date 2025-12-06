@@ -13,7 +13,7 @@ let backgroundImage = null;
 // 옷 이미지 저장소
 let clothImages = {
   top: {},
-  bottom: {}
+  bottom: {},
 };
 
 // 레트로 배경 패턴 위치 (고정)
@@ -54,7 +54,7 @@ function preload() {
 
   여자마네킹 = loadImage("image/마네킹여자.png");
   남자마네킹 = loadImage("image/남자마네킹.png");
-  logoImage = loadImage("image/logo.png");
+  logoImage = loadImage("image/logo2.png");
   selectSeasonImage = loadImage("image/select-season.png");
   backgroundImage = loadImage("image/background.png");
 
@@ -76,65 +76,393 @@ function setup() {
   availableClothes = [
     // 남성 의류
     // 상의 (Top)
-    { id: 1, name: "봄 셔츠", category: "top", season: "spring", gender: "male", imageId: 1 },
-    { id: 2, name: "봄 후드티", category: "top", season: "spring", gender: "male", imageId: 2 },
-    { id: 3, name: "여름 반팔", category: "top", season: "summer", gender: "male", imageId: 3 },
-    { id: 4, name: "여름 민소매", category: "top", season: "summer", gender: "male", imageId: 4 },
-    { id: 5, name: "가을 긴팔", category: "top", season: "fall", gender: "male", imageId: 5 },
-    { id: 6, name: "가을 니트", category: "top", season: "fall", gender: "male", imageId: 6 },
-    { id: 7, name: "겨울 패딩", category: "top", season: "winter", gender: "male", imageId: 7 },
-    { id: 8, name: "겨울 코트", category: "top", season: "winter", gender: "male", imageId: 8 },
-    { id: 9, name: "기본 티셔츠", category: "top", season: "universal", gender: "male", imageId: 9 },
-    { id: 10, name: "기본 셔츠", category: "top", season: "universal", gender: "male", imageId: 10 },
-    
+    {
+      id: 1,
+      name: "봄 셔츠",
+      category: "top",
+      season: "spring",
+      gender: "male",
+      imageId: 1,
+    },
+    {
+      id: 2,
+      name: "봄 후드티",
+      category: "top",
+      season: "spring",
+      gender: "male",
+      imageId: 2,
+    },
+    {
+      id: 3,
+      name: "여름 반팔",
+      category: "top",
+      season: "summer",
+      gender: "male",
+      imageId: 3,
+    },
+    {
+      id: 4,
+      name: "여름 민소매",
+      category: "top",
+      season: "summer",
+      gender: "male",
+      imageId: 4,
+    },
+    {
+      id: 5,
+      name: "가을 긴팔",
+      category: "top",
+      season: "fall",
+      gender: "male",
+      imageId: 5,
+    },
+    {
+      id: 6,
+      name: "가을 니트",
+      category: "top",
+      season: "fall",
+      gender: "male",
+      imageId: 6,
+    },
+    {
+      id: 7,
+      name: "겨울 패딩",
+      category: "top",
+      season: "winter",
+      gender: "male",
+      imageId: 7,
+    },
+    {
+      id: 8,
+      name: "겨울 코트",
+      category: "top",
+      season: "winter",
+      gender: "male",
+      imageId: 8,
+    },
+    {
+      id: 9,
+      name: "기본 티셔츠",
+      category: "top",
+      season: "universal",
+      gender: "male",
+      imageId: 9,
+    },
+    {
+      id: 10,
+      name: "기본 셔츠",
+      category: "top",
+      season: "universal",
+      gender: "male",
+      imageId: 10,
+    },
+
     // 하의 (Bottom)
-    { id: 11, name: "봄 청바지", category: "bottom", season: "spring", gender: "male", imageId: 1 },
-    { id: 12, name: "봄 면바지", category: "bottom", season: "spring", gender: "male", imageId: 2 },
-    { id: 13, name: "여름 반바지", category: "bottom", season: "summer", gender: "male", imageId: 3 },
-    { id: 14, name: "여름 린넨바지", category: "bottom", season: "summer", gender: "male", imageId: 4 },
-    { id: 15, name: "가을 슬랙스", category: "bottom", season: "fall", gender: "male", imageId: 5 },
-    { id: 16, name: "가을 청바지", category: "bottom", season: "fall", gender: "male", imageId: 6 },
-    { id: 17, name: "겨울 기모바지", category: "bottom", season: "winter", gender: "male", imageId: 7 },
-    { id: 18, name: "겨울 정장바지", category: "bottom", season: "winter", gender: "male", imageId: 8 },
-    { id: 19, name: "기본 청바지", category: "bottom", season: "universal", gender: "male", imageId: 9 },
-    { id: 20, name: "기본 면바지", category: "bottom", season: "universal", gender: "male", imageId: 10 },
-    
+    {
+      id: 11,
+      name: "봄 청바지",
+      category: "bottom",
+      season: "spring",
+      gender: "male",
+      imageId: 1,
+    },
+    {
+      id: 12,
+      name: "봄 면바지",
+      category: "bottom",
+      season: "spring",
+      gender: "male",
+      imageId: 2,
+    },
+    {
+      id: 13,
+      name: "여름 반바지",
+      category: "bottom",
+      season: "summer",
+      gender: "male",
+      imageId: 3,
+    },
+    {
+      id: 14,
+      name: "여름 린넨바지",
+      category: "bottom",
+      season: "summer",
+      gender: "male",
+      imageId: 4,
+    },
+    {
+      id: 15,
+      name: "가을 슬랙스",
+      category: "bottom",
+      season: "fall",
+      gender: "male",
+      imageId: 5,
+    },
+    {
+      id: 16,
+      name: "가을 청바지",
+      category: "bottom",
+      season: "fall",
+      gender: "male",
+      imageId: 6,
+    },
+    {
+      id: 17,
+      name: "겨울 기모바지",
+      category: "bottom",
+      season: "winter",
+      gender: "male",
+      imageId: 7,
+    },
+    {
+      id: 18,
+      name: "겨울 정장바지",
+      category: "bottom",
+      season: "winter",
+      gender: "male",
+      imageId: 8,
+    },
+    {
+      id: 19,
+      name: "기본 청바지",
+      category: "bottom",
+      season: "universal",
+      gender: "male",
+      imageId: 9,
+    },
+    {
+      id: 20,
+      name: "기본 면바지",
+      category: "bottom",
+      season: "universal",
+      gender: "male",
+      imageId: 10,
+    },
+
     // 신발 (Shoes)
-    { id: 21, name: "봄 운동화", category: "shoes", season: "spring", gender: "male" },
-    { id: 22, name: "여름 샌들", category: "shoes", season: "summer", gender: "male" },
-    { id: 23, name: "가을 구두", category: "shoes", season: "fall", gender: "male" },
-    { id: 24, name: "겨울 부츠", category: "shoes", season: "winter", gender: "male" },
+    {
+      id: 21,
+      name: "봄 운동화",
+      category: "shoes",
+      season: "spring",
+      gender: "male",
+    },
+    {
+      id: 22,
+      name: "여름 샌들",
+      category: "shoes",
+      season: "summer",
+      gender: "male",
+    },
+    {
+      id: 23,
+      name: "가을 구두",
+      category: "shoes",
+      season: "fall",
+      gender: "male",
+    },
+    {
+      id: 24,
+      name: "겨울 부츠",
+      category: "shoes",
+      season: "winter",
+      gender: "male",
+    },
 
     // 여성 의류
     // 상의 (Top)
-    { id: 25, name: "봄 블라우스", category: "top", season: "spring", gender: "female", imageId: 1 },
-    { id: 26, name: "봄 가디건", category: "top", season: "spring", gender: "female", imageId: 2 },
-    { id: 27, name: "여름 크롭탑", category: "top", season: "summer", gender: "female", imageId: 3 },
-    { id: 28, name: "여름 원피스", category: "top", season: "summer", gender: "female", imageId: 4 },
-    { id: 29, name: "가을 니트", category: "top", season: "fall", gender: "female", imageId: 5 },
-    { id: 30, name: "가을 자켓", category: "top", season: "fall", gender: "female", imageId: 6 },
-    { id: 31, name: "겨울 코트", category: "top", season: "winter", gender: "female", imageId: 7 },
-    { id: 32, name: "겨울 패딩", category: "top", season: "winter", gender: "female", imageId: 8 },
-    { id: 33, name: "기본 티셔츠", category: "top", season: "universal", gender: "female", imageId: 9 },
-    { id: 34, name: "기본 셔츠", category: "top", season: "universal", gender: "female", imageId: 10 },
-    
+    {
+      id: 25,
+      name: "봄 블라우스",
+      category: "top",
+      season: "spring",
+      gender: "female",
+      imageId: 1,
+    },
+    {
+      id: 26,
+      name: "봄 가디건",
+      category: "top",
+      season: "spring",
+      gender: "female",
+      imageId: 2,
+    },
+    {
+      id: 27,
+      name: "여름 크롭탑",
+      category: "top",
+      season: "summer",
+      gender: "female",
+      imageId: 3,
+    },
+    {
+      id: 28,
+      name: "여름 원피스",
+      category: "top",
+      season: "summer",
+      gender: "female",
+      imageId: 4,
+    },
+    {
+      id: 29,
+      name: "가을 니트",
+      category: "top",
+      season: "fall",
+      gender: "female",
+      imageId: 5,
+    },
+    {
+      id: 30,
+      name: "가을 자켓",
+      category: "top",
+      season: "fall",
+      gender: "female",
+      imageId: 6,
+    },
+    {
+      id: 31,
+      name: "겨울 코트",
+      category: "top",
+      season: "winter",
+      gender: "female",
+      imageId: 7,
+    },
+    {
+      id: 32,
+      name: "겨울 패딩",
+      category: "top",
+      season: "winter",
+      gender: "female",
+      imageId: 8,
+    },
+    {
+      id: 33,
+      name: "기본 티셔츠",
+      category: "top",
+      season: "universal",
+      gender: "female",
+      imageId: 9,
+    },
+    {
+      id: 34,
+      name: "기본 셔츠",
+      category: "top",
+      season: "universal",
+      gender: "female",
+      imageId: 10,
+    },
+
     // 하의 (Bottom)
-    { id: 35, name: "봄 스커트", category: "bottom", season: "spring", gender: "female", imageId: 1 },
-    { id: 36, name: "봄 청바지", category: "bottom", season: "spring", gender: "female", imageId: 2 },
-    { id: 37, name: "여름 미니스커트", category: "bottom", season: "summer", gender: "female", imageId: 3 },
-    { id: 38, name: "여름 반바지", category: "bottom", season: "summer", gender: "female", imageId: 4 },
-    { id: 39, name: "가을 롱스커트", category: "bottom", season: "fall", gender: "female", imageId: 5 },
-    { id: 40, name: "가을 슬랙스", category: "bottom", season: "fall", gender: "female", imageId: 6 },
-    { id: 41, name: "겨울 기모바지", category: "bottom", season: "winter", gender: "female", imageId: 7 },
-    { id: 42, name: "겨울 두꺼운스커트", category: "bottom", season: "winter", gender: "female", imageId: 8 },
-    { id: 43, name: "기본 청바지", category: "bottom", season: "universal", gender: "female", imageId: 9 },
-    { id: 44, name: "기본 스커트", category: "bottom", season: "universal", gender: "female", imageId: 10 },
-    
+    {
+      id: 35,
+      name: "봄 스커트",
+      category: "bottom",
+      season: "spring",
+      gender: "female",
+      imageId: 1,
+    },
+    {
+      id: 36,
+      name: "봄 청바지",
+      category: "bottom",
+      season: "spring",
+      gender: "female",
+      imageId: 2,
+    },
+    {
+      id: 37,
+      name: "여름 미니스커트",
+      category: "bottom",
+      season: "summer",
+      gender: "female",
+      imageId: 3,
+    },
+    {
+      id: 38,
+      name: "여름 반바지",
+      category: "bottom",
+      season: "summer",
+      gender: "female",
+      imageId: 4,
+    },
+    {
+      id: 39,
+      name: "가을 롱스커트",
+      category: "bottom",
+      season: "fall",
+      gender: "female",
+      imageId: 5,
+    },
+    {
+      id: 40,
+      name: "가을 슬랙스",
+      category: "bottom",
+      season: "fall",
+      gender: "female",
+      imageId: 6,
+    },
+    {
+      id: 41,
+      name: "겨울 기모바지",
+      category: "bottom",
+      season: "winter",
+      gender: "female",
+      imageId: 7,
+    },
+    {
+      id: 42,
+      name: "겨울 두꺼운스커트",
+      category: "bottom",
+      season: "winter",
+      gender: "female",
+      imageId: 8,
+    },
+    {
+      id: 43,
+      name: "기본 청바지",
+      category: "bottom",
+      season: "universal",
+      gender: "female",
+      imageId: 9,
+    },
+    {
+      id: 44,
+      name: "기본 스커트",
+      category: "bottom",
+      season: "universal",
+      gender: "female",
+      imageId: 10,
+    },
+
     // 신발 (Shoes)
-    { id: 45, name: "봄 플랫슈즈", category: "shoes", season: "spring", gender: "female" },
-    { id: 46, name: "여름 샌들", category: "shoes", season: "summer", gender: "female" },
-    { id: 47, name: "가을 하이힐", category: "shoes", season: "fall", gender: "female" },
-    { id: 48, name: "겨울 부츠", category: "shoes", season: "winter", gender: "female" },
+    {
+      id: 45,
+      name: "봄 플랫슈즈",
+      category: "shoes",
+      season: "spring",
+      gender: "female",
+    },
+    {
+      id: 46,
+      name: "여름 샌들",
+      category: "shoes",
+      season: "summer",
+      gender: "female",
+    },
+    {
+      id: 47,
+      name: "가을 하이힐",
+      category: "shoes",
+      season: "fall",
+      gender: "female",
+    },
+    {
+      id: 48,
+      name: "겨울 부츠",
+      category: "shoes",
+      season: "winter",
+      gender: "female",
+    },
   ];
 
   // 레트로 배경 패턴 생성 (한 번만)
@@ -566,22 +894,26 @@ function drawGame() {
 
     // 마네킹에 입힌 옷 이미지 렌더링
     for (let cloth of appliedClothes) {
-      if (cloth.imageId && clothImages[cloth.category] && clothImages[cloth.category][cloth.imageId]) {
+      if (
+        cloth.imageId &&
+        clothImages[cloth.category] &&
+        clothImages[cloth.category][cloth.imageId]
+      ) {
         let clothImage = clothImages[cloth.category][cloth.imageId];
-        
+
         // 옷 이미지 크기와 위치 조정 (마네킹에 맞게)
         let clothWidth = mannequinWidth * 0.8;
         let clothHeight = (clothImage.height / clothImage.width) * clothWidth;
         let clothX = mannequinX + (mannequinWidth - clothWidth) / 2;
         let clothY = mannequinY + (mannequinHeight - clothHeight) / 2;
-        
+
         // 카테고리별로 위치 조정
         if (cloth.category === "top") {
           clothY = mannequinY + mannequinHeight * 0.2;
         } else if (cloth.category === "bottom") {
           clothY = mannequinY + mannequinHeight * 0.5;
         }
-        
+
         image(clothImage, clothX, clothY, clothWidth, clothHeight);
       }
     }
@@ -741,7 +1073,8 @@ function drawWardrobeModal() {
   if (currentCategory) {
     // 현재 카테고리와 성별에 맞는 옷 필터링 (모든 계절 포함)
     let categoryClothes = availableClothes.filter(
-      (cloth) => cloth.category === currentCategory.key && cloth.gender === selectedSex
+      (cloth) =>
+        cloth.category === currentCategory.key && cloth.gender === selectedSex
     );
 
     // 옷 아이템 표시
@@ -791,15 +1124,18 @@ function drawWardrobeModal() {
       rect(itemX, itemY, itemWidth, itemHeight, 10);
 
       // 옷 이미지 표시 (있는 경우)
-      if (cloth.imageId && clothImages[cloth.category] && clothImages[cloth.category][cloth.imageId]) {
+      if (
+        cloth.imageId &&
+        clothImages[cloth.category] &&
+        clothImages[cloth.category][cloth.imageId]
+      ) {
         let clothImage = clothImages[cloth.category][cloth.imageId];
         let imgSize = Math.min(itemWidth - 20, itemHeight - 30);
         let imgX = itemX + (itemWidth - imgSize) / 2;
         let imgY = itemY + 10;
-        
+
         image(clothImage, imgX, imgY, imgSize, imgSize);
       }
-
 
       // 다음 위치 계산
       col++;
@@ -892,15 +1228,18 @@ function drawSelectedClothesPreview() {
     rect(itemX - itemSize / 2, previewY + 30, itemSize, itemSize, 5);
 
     // 옷 이미지 표시 (있는 경우)
-    if (cloth.imageId && clothImages[cloth.category] && clothImages[cloth.category][cloth.imageId]) {
+    if (
+      cloth.imageId &&
+      clothImages[cloth.category] &&
+      clothImages[cloth.category][cloth.imageId]
+    ) {
       let clothImage = clothImages[cloth.category][cloth.imageId];
       let imgSize = itemSize - 10;
       let imgX = itemX - imgSize / 2;
       let imgY = previewY + 35;
-      
+
       image(clothImage, imgX, imgY, imgSize, imgSize);
     }
-
   }
 }
 
@@ -987,7 +1326,8 @@ function calculateScore() {
   // 3개 모두 선택했는지 확인 (상의, 하의, 신발)
   if (selectedClothes.length === 3) {
     if (wrongCount === 0) {
-      scoreMessage = "완벽해요! 계절에 완벽하게 맞는 코디입니다! (" + score + "점)";
+      scoreMessage =
+        "완벽해요! 계절에 완벽하게 맞는 코디입니다! (" + score + "점)";
     } else if (correctCount > wrongCount) {
       scoreMessage = "좋아요! 대부분 적절한 선택이에요. (" + score + "점)";
     } else {
@@ -1154,11 +1494,15 @@ function mousePressed() {
             mouseY < itemY + itemHeight
           ) {
             // 이미 선택된 옷인지 확인
-            let isAlreadySelected = selectedClothes.some((c) => c.id === cloth.id);
-            
+            let isAlreadySelected = selectedClothes.some(
+              (c) => c.id === cloth.id
+            );
+
             if (isAlreadySelected) {
               // 이미 선택된 옷이면 선택 취소
-              selectedClothes = selectedClothes.filter((c) => c.id !== cloth.id);
+              selectedClothes = selectedClothes.filter(
+                (c) => c.id !== cloth.id
+              );
             } else {
               // 기존 같은 카테고리 옷 제거하고 새로 선택
               selectedClothes = selectedClothes.filter(
