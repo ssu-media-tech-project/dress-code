@@ -68,12 +68,9 @@ function drawGame(seasonImages, 여자마네킹, 남자마네킹) {
     }
   }
 
-  // 장롱 아이콘 그리기
-  drawWardrobeIcon(isGameCompleted);
-
-  // 하단에 선택한 옷 조합 표시
-  if (selectedClothes.length > 0) {
-    drawSelectedClothesPreview(selectedClothes);
+  // 마네킹 주변에 옷 아이템들 표시
+  if (!isGameCompleted) {
+    drawClothesAroundMannequin();
   }
 
   // 마네킹 렌더링
@@ -89,16 +86,15 @@ function drawGame(seasonImages, 여자마네킹, 남자마네킹) {
     drawRetryButton();
   }
 
-  // 모달이 열려있으면 모달 그리기
-  if (isWardrobeOpen) {
-    drawWardrobeModal(closetImage);
+  // 게임 완료 화면 또는 안내 텍스트
+  if (!isGameCompleted) {
+    textSize(16);
+    fill(255);
+    stroke(0);
+    strokeWeight(2);
+    textAlign(CENTER, CENTER);
+    text("옷을 클릭해서 마네킹에 입혀보세요! 스페이스바: 계절 선택으로", width / 2, height - 50);
   }
-
-  textSize(16);
-  fill(255);
-  stroke(0);
-  strokeWeight(2);
-  text("스페이스바를 눌러 계절 선택으로 돌아가기", width / 2, height - 100);
 }
 
 // 마네킹 렌더링 함수
@@ -596,4 +592,115 @@ function changeTab(newTab) {
   selectedTab = newTab;
   scrollOffset = 0;
   maxScrollOffset = 0;
+}
+
+// 마네킹 주변에 옷 아이템들 그리기
+function drawClothesAroundMannequin() {
+  // 현재 성별에 맞는 모든 옷들 필터링 (계절 상관없이)
+  let clothesToShow = availableClothes.filter(
+    cloth => cloth.gender === selectedSex
+  );
+
+  // 카테고리별로 분류 (신발 제외)
+  let tops = clothesToShow.filter(cloth => cloth.category === "top");
+  let bottoms = clothesToShow.filter(cloth => cloth.category === "bottom");
+
+  let itemSize = 120;
+  let spacing = 30;
+  
+  // 상의들을 왼쪽에 배치
+  drawClothesCategory(tops, "left", itemSize, spacing, "상의");
+  
+  // 하의들을 오른쪽에 배치  
+  drawClothesCategory(bottoms, "right", itemSize, spacing, "하의");
+}
+
+// 특정 카테고리의 옷들을 지정된 위치에 그리기
+function drawClothesCategory(clothes, position, itemSize, spacing, categoryName) {
+  if (clothes.length === 0) return;
+  
+  let startX, startY, direction, itemsPerRow;
+  
+  switch(position) {
+    case "left":
+      startX = 30;
+      startY = height / 2 - (Math.ceil(clothes.length / 2) * (itemSize + spacing)) / 2;
+      direction = "grid";
+      itemsPerRow = 2;
+      break;
+    case "right":
+      startX = width - 30 - (2 * itemSize) - spacing;
+      startY = height / 2 - (Math.ceil(clothes.length / 2) * (itemSize + spacing)) / 2;
+      direction = "grid";
+      itemsPerRow = 2;
+      break;
+    case "bottom":
+      startX = width / 2 - (Math.ceil(clothes.length / 2) * (itemSize + spacing)) / 2;
+      startY = height - 200;
+      direction = "grid";
+      itemsPerRow = Math.ceil(clothes.length / 2);
+      break;
+  }
+  
+  // 카테고리 라벨
+  fill(255);
+  stroke(0);
+  strokeWeight(2);
+  textSize(18);
+  textAlign(CENTER, CENTER);
+  
+  if (direction === "grid") {
+    text(categoryName, startX + itemSize + spacing / 2, startY - 40);
+  }
+  
+  // 옷 아이템들 그리기
+  for (let i = 0; i < clothes.length; i++) {
+    let cloth = clothes[i];
+    let row = Math.floor(i / itemsPerRow);
+    let col = i % itemsPerRow;
+    
+    let itemX = startX + col * (itemSize + spacing);
+    let itemY = startY + row * (itemSize + spacing);
+    
+    // 선택된 옷인지 확인
+    let isSelected = appliedClothes.some(c => c.id === cloth.id);
+    
+    // 호버 감지
+    let isHovered = mouseX > itemX && mouseX < itemX + itemSize &&
+                    mouseY > itemY && mouseY < itemY + itemSize;
+    
+    // 선택된 옷만 테두리 표시
+    if (isSelected) {
+      noFill();
+      stroke(100, 200, 255);
+      strokeWeight(3);
+      rect(itemX, itemY, itemSize, itemSize, 10);
+    } else if (isHovered) {
+      noFill();
+      stroke(255, 255, 255, 150);
+      strokeWeight(2);
+      rect(itemX, itemY, itemSize, itemSize, 10);
+    }
+    
+    // 옷 이미지 표시
+    if (cloth.imageId && 
+        clothImages[selectedSex] && 
+        clothImages[selectedSex][cloth.category] && 
+        clothImages[selectedSex][cloth.category][cloth.imageId]) {
+      let clothImage = clothImages[selectedSex][cloth.category][cloth.imageId];
+      let imgSize = itemSize - 10;
+      let imgX = itemX + 5;
+      let imgY = itemY + 5;
+      
+      image(clothImage, imgX, imgY, imgSize, imgSize);
+    }
+    
+    // 클릭 영역 저장 (이후 클릭 처리용)
+    cloth._displayInfo = {
+      x: itemX,
+      y: itemY,
+      width: itemSize,
+      height: itemSize
+    };
+  }
 }

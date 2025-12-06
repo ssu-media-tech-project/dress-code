@@ -4,14 +4,11 @@
 let clothImages = {
   male: {
     top: {},
-    bottom: {},
-    shoes: {}
+    bottom: {}
   },
   female: {
     top: {},
-    bottom: {},
-    shoes: {},
-    accessories: {}
+    bottom: {}
   }
 };
 
@@ -183,35 +180,6 @@ function initializeClothes() {
       imageId: 10,
     },
 
-    // 신발 (Shoes)
-    {
-      id: 21,
-      name: "봄 운동화",
-      category: "shoes",
-      season: "spring",
-      gender: "male",
-    },
-    {
-      id: 22,
-      name: "여름 샌들",
-      category: "shoes",
-      season: "summer",
-      gender: "male",
-    },
-    {
-      id: 23,
-      name: "가을 구두",
-      category: "shoes",
-      season: "fall",
-      gender: "male",
-    },
-    {
-      id: 24,
-      name: "겨울 부츠",
-      category: "shoes",
-      season: "winter",
-      gender: "male",
-    },
 
     // 여성 의류
     // 봄 상의 (Top)
@@ -742,71 +710,6 @@ function initializeClothes() {
       imageId: 37,
     },
 
-    // 신발 (Shoes)
-    {
-      id: 89,
-      name: "봄 플랫슈즈 1",
-      category: "shoes",
-      season: "spring",
-      gender: "female",
-      imageId: 1,
-    },
-    {
-      id: 90,
-      name: "봄 스니커즈 2",
-      category: "shoes",
-      season: "spring",
-      gender: "female",
-      imageId: 2,
-    },
-    {
-      id: 91,
-      name: "여름 샌들 1",
-      category: "shoes",
-      season: "summer",
-      gender: "female",
-      imageId: 3,
-    },
-    {
-      id: 92,
-      name: "여름 플랫슈즈 2",
-      category: "shoes",
-      season: "summer",
-      gender: "female",
-      imageId: 4,
-    },
-    {
-      id: 93,
-      name: "가을 하이힐 1",
-      category: "shoes",
-      season: "fall",
-      gender: "female",
-      imageId: 5,
-    },
-    {
-      id: 94,
-      name: "가을 부츠 2",
-      category: "shoes",
-      season: "fall",
-      gender: "female",
-      imageId: 6,
-    },
-    {
-      id: 95,
-      name: "겨울 부츠 1",
-      category: "shoes",
-      season: "winter",
-      gender: "female",
-      imageId: 7,
-    },
-    {
-      id: 96,
-      name: "겨울 하이힐 2",
-      category: "shoes",
-      season: "winter",
-      gender: "female",
-      imageId: 8,
-    },
   ];
 }
 
@@ -856,15 +759,6 @@ function loadClothImages() {
     clothImages.female.bottom[i + 30] = loadImage(`image/여자_겨울/겨울_하의${i}.png`);
   }
   
-  // 여성 신발 (각 계절별)
-  clothImages.female.shoes[1] = loadImage(`image/여자_봄/봄_신발_00.png`);
-  clothImages.female.shoes[2] = loadImage(`image/여자_봄/봄_신발_04.png`);
-  clothImages.female.shoes[3] = loadImage(`image/여자_여름/여름_신발1.png`);
-  clothImages.female.shoes[4] = loadImage(`image/여자_여름/여름_신발2.png`);
-  clothImages.female.shoes[5] = loadImage(`image/여자_가을/가을_신발1.png`);
-  clothImages.female.shoes[6] = loadImage(`image/여자_가을/가을_신발2.png`);
-  clothImages.female.shoes[7] = loadImage(`image/여자_겨울/겨울_신발1.png`);
-  clothImages.female.shoes[8] = loadImage(`image/여자_겨울/겨울_신발2.png`);
 }
 
 // 점수 계산 함수
@@ -896,8 +790,8 @@ function generateScoreMessage(
   wrongCount,
   selectedClothes
 ) {
-  // 3개 모두 선택했는지 확인 (상의, 하의, 신발)
-  if (selectedClothes.length === 3) {
+  // 2개 모두 선택했는지 확인 (상의, 하의)
+  if (selectedClothes.length === 2) {
     if (wrongCount === 0) {
       return "완벽해요! 계절에 완벽하게 맞는 코디입니다! (" + score + "점)";
     } else if (correctCount > wrongCount) {
@@ -906,6 +800,6 @@ function generateScoreMessage(
       return "아쉽네요. 계절을 더 고려해보세요. (" + score + "점)";
     }
   } else {
-    return "상의, 하의, 신발을 모두 선택해주세요.";
+    return "상의와 하의를 모두 선택해주세요.";
   }
 }

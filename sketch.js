@@ -125,31 +125,9 @@ function handleGameClicks() {
     }
   }
 
-  // 장롱 아이콘 클릭
+  // 옷 아이템 클릭 처리
   if (!isGameCompleted) {
-    let iconSize = 70;
-    let iconX = 50;
-    let iconY = 50;
-    if (
-      mouseX > iconX - iconSize / 2 &&
-      mouseX < iconX + iconSize / 2 &&
-      mouseY > iconY - iconSize / 2 &&
-      mouseY < iconY + iconSize / 2
-    ) {
-      isWardrobeOpen = !isWardrobeOpen;
-      if (!isWardrobeOpen) {
-        selectedClothes = [];
-        selectedTab = "top";
-      } else {
-        selectedTab = "top";
-      }
-      return;
-    }
-  }
-
-  // 모달이 열려있을 때의 클릭 처리
-  if (isWardrobeOpen) {
-    handleModalClicks();
+    handleClothesClicks();
   }
 }
 
@@ -342,5 +320,65 @@ function keyPressed() {
   } else if (key === " " && gameState === "sexSelect") {
     gameState = "seasonSelect";
     selectedSeason = "";
+  }
+}
+
+// 옷 아이템 클릭 처리
+function handleClothesClicks() {
+  // 현재 성별에 맞는 모든 옷들 필터링 (계절 상관없이)
+  let clothesToShow = availableClothes.filter(
+    cloth => cloth.gender === selectedSex
+  );
+
+  for (let cloth of clothesToShow) {
+    if (cloth._displayInfo) {
+      let { x, y, width, height } = cloth._displayInfo;
+      
+      if (mouseX > x && mouseX < x + width &&
+          mouseY > y && mouseY < y + height) {
+        
+        // 이미 입고 있는 옷인지 확인
+        let isAlreadyWorn = appliedClothes.some(c => c.id === cloth.id);
+        
+        if (isAlreadyWorn) {
+          // 이미 입고 있으면 벗기기
+          appliedClothes = appliedClothes.filter(c => c.id !== cloth.id);
+        } else {
+          // 같은 카테고리의 기존 옷 제거 후 새로운 옷 입히기
+          appliedClothes = appliedClothes.filter(c => c.category !== cloth.category);
+          appliedClothes.push(cloth);
+        }
+        
+        // 모든 카테고리에 옷을 입었는지 확인 (신발 제외)
+        let hasTop = appliedClothes.some(c => c.category === "top");
+        let hasBottom = appliedClothes.some(c => c.category === "bottom");
+        
+        if (hasTop && hasBottom) {
+          // 모든 옷을 입었으면 점수 계산
+          setTimeout(() => {
+            let result = calculateClothingScore(appliedClothes, selectedSeason);
+            let message = generateScoreMessage(
+              result.score,
+              result.correctCount,
+              result.wrongCount,
+              appliedClothes
+            );
+            
+            gameScore += result.score;
+            scoreMessage = message;
+            showScoreResult = true;
+            isGameCompleted = true;
+            
+            // 3초 후 게임 종료 화면 표시
+            setTimeout(() => {
+              showScoreResult = false;
+              showGameOver = true;
+            }, 3000);
+          }, 500); // 0.5초 후 점수 계산 (옷이 완전히 입혀진 후)
+        }
+        
+        break;
+      }
+    }
   }
 }
