@@ -98,11 +98,37 @@ function draw() {
 function mousePressed() {
   // 게임 화면에서의 클릭 처리
   if (gameState === "game") {
-    handleGameClicks();
+    if (showGameOver) {
+      handleGameOverClicks();
+    } else {
+      handleGameMousePressed();
+    }
   } else if (gameState === "seasonSelect") {
     handleSeasonSelection();
   } else if (gameState === "sexSelect") {
     handleSexSelection();
+  }
+}
+
+function mouseDragged() {
+  if (gameState === "game" && !showGameOver && !isGameCompleted) {
+    // 이미 드래그 중이면 계속 드래그
+    if (isDragInProgress()) {
+      return;
+    }
+    
+    // 드래그 시작 확인
+    if (!isDragInProgress() && draggedCloth) {
+      startDragOperation(draggedCloth);
+    }
+  }
+}
+
+function mouseReleased() {
+  if (gameState === "game" && !showGameOver && !isGameCompleted) {
+    if (isDragInProgress()) {
+      endDragOperation();
+    }
   }
 }
 
@@ -323,62 +349,61 @@ function keyPressed() {
   }
 }
 
-// 옷 아이템 클릭 처리
-function handleClothesClicks() {
-  // 현재 성별에 맞는 모든 옷들 필터링 (계절 상관없이)
-  let clothesToShow = availableClothes.filter(
-    cloth => cloth.gender === selectedSex
-  );
+// 게임 오버 화면 클릭 처리
+function handleGameOverClicks() {
+  let buttonInfo = drawGameOver(logoImage);
+  if (mouseX > buttonInfo.btnX && 
+      mouseX < buttonInfo.btnX + buttonInfo.btnWidth &&
+      mouseY > buttonInfo.btnY && 
+      mouseY < buttonInfo.btnY + buttonInfo.btnHeight) {
+    showGameOver = false;
+    gameState = "seasonSelect";
+    initializeGame();
+  }
+}
 
-  for (let cloth of clothesToShow) {
-    if (cloth._displayInfo) {
-      let { x, y, width, height } = cloth._displayInfo;
-      
-      if (mouseX > x && mouseX < x + width &&
-          mouseY > y && mouseY < y + height) {
-        
-        // 이미 입고 있는 옷인지 확인
-        let isAlreadyWorn = appliedClothes.some(c => c.id === cloth.id);
-        
-        if (isAlreadyWorn) {
-          // 이미 입고 있으면 벗기기
-          appliedClothes = appliedClothes.filter(c => c.id !== cloth.id);
-        } else {
-          // 같은 카테고리의 기존 옷 제거 후 새로운 옷 입히기
-          appliedClothes = appliedClothes.filter(c => c.category !== cloth.category);
-          appliedClothes.push(cloth);
-        }
-        
-        // 모든 카테고리에 옷을 입었는지 확인 (신발 제외)
-        let hasTop = appliedClothes.some(c => c.category === "top");
-        let hasBottom = appliedClothes.some(c => c.category === "bottom");
-        
-        if (hasTop && hasBottom) {
-          // 모든 옷을 입었으면 점수 계산
-          setTimeout(() => {
-            let result = calculateClothingScore(appliedClothes, selectedSeason);
-            let message = generateScoreMessage(
-              result.score,
-              result.correctCount,
-              result.wrongCount,
-              appliedClothes
-            );
-            
-            gameScore += result.score;
-            scoreMessage = message;
-            showScoreResult = true;
-            isGameCompleted = true;
-            
-            // 3초 후 게임 종료 화면 표시
-            setTimeout(() => {
-              showScoreResult = false;
-              showGameOver = true;
-            }, 3000);
-          }, 500); // 0.5초 후 점수 계산 (옷이 완전히 입혀진 후)
-        }
-        
-        break;
-      }
+// 게임 화면 마우스 눌림 처리
+function handleGameMousePressed() {
+  // 다시 하기 버튼 클릭
+  if (isGameCompleted) {
+    let btnWidth = 200;
+    let btnHeight = 60;
+    let btnX = width / 2 - btnWidth / 2;
+    let btnY = height - 150;
+
+    if (mouseX > btnX && mouseX < btnX + btnWidth &&
+        mouseY > btnY && mouseY < btnY + btnHeight) {
+      restartGame();
+      return;
+    }
+  }
+
+  // 옷 클릭/드래그 시작 처리
+  if (!isGameCompleted) {
+    let clickedCloth = findClothAtPosition(mouseX, mouseY);
+    if (clickedCloth) {
+      // 드래그 준비
+      draggedCloth = clickedCloth;
+    }
+  }
+}
+
+// 기존 드래그 관련 함수들은 dragUtils.js로 이동됨
+
+// 옷 아이템 클릭 처리 (드래그가 아닌 직접 클릭으로 입히기)
+function handleClothesClicks() {
+  let clickedCloth = findClothAtPosition(mouseX, mouseY);
+  
+  if (clickedCloth) {
+    // 이미 입고 있는 옷인지 확인
+    let isAlreadyWorn = appliedClothes.some(c => c.id === clickedCloth.id);
+    
+    if (isAlreadyWorn) {
+      // 이미 입고 있으면 벗기기
+      appliedClothes = appliedClothes.filter(c => c.id !== clickedCloth.id);
+    } else {
+      // 옷 입히기
+      applyClothToMannequin(clickedCloth);
     }
   }
 }

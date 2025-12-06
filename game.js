@@ -13,6 +13,12 @@ let isGameCompleted = false;
 let selectedTab = "top";
 let showGameOver = false;
 
+// 드래그 앤 드롭 관련 변수
+let isDragging = false;
+let draggedCloth = null;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+
 // 옷장 모달 관련 변수
 let isWardrobeOpen = false;
 let scrollOffset = 0;
@@ -38,6 +44,7 @@ function initializeGame() {
   selectedTab = "top";
   isWardrobeOpen = false;
   showGameOver = false;
+  initializeDragState();
   loadingStartTime = millis();
 
   // 옷 목록 초기화
@@ -86,6 +93,11 @@ function drawGame(seasonImages, 여자마네킹, 남자마네킹) {
     drawRetryButton();
   }
 
+  // 드래그 중인 옷 표시
+  if (isDragInProgress()) {
+    renderDraggedCloth();
+  }
+
   // 게임 완료 화면 또는 안내 텍스트
   if (!isGameCompleted) {
     textSize(16);
@@ -93,7 +105,7 @@ function drawGame(seasonImages, 여자마네킹, 남자마네킹) {
     stroke(0);
     strokeWeight(2);
     textAlign(CENTER, CENTER);
-    text("옷을 클릭해서 마네킹에 입혀보세요! 스페이스바: 계절 선택으로", width / 2, height - 50);
+    text("옷을 드래그해서 마네킹에 입혀보세요! 스페이스바: 계절 선택으로", width / 2, height - 50);
   }
 }
 
@@ -704,3 +716,5 @@ function drawClothesCategory(clothes, position, itemSize, spacing, categoryName)
     };
   }
 }
+
+// 기존 함수들은 dragUtils.js로 이동됨
