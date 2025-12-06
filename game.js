@@ -164,12 +164,6 @@ function renderMannequin(여자마네킹, 남자마네킹) {
         let clothHeight = mannequinHeight;
         let clothX = mannequinX;
 
-        // 성별에 따라 하의 X 위치 조정
-        let clothX =
-          selectedSex === "female"
-            ? mannequinX + (mannequinWidth - clothWidth) / 2 - 5 // 여자는 왼쪽으로
-            : mannequinX + (mannequinWidth - clothWidth) / 2; // 남자는 기존 위치
-
         image(clothImage, clothX, clothY, clothWidth, clothHeight);
       }
     }
@@ -190,12 +184,6 @@ function renderMannequin(여자마네킹, 남자마네킹) {
         let clothWidth = mannequinWidth;
         let clothHeight = mannequinHeight;
         let clothX = mannequinX;
-
-        // 성별에 따라 상의 X 위치 조정
-        let clothX =
-          selectedSex === "female"
-            ? mannequinX + (mannequinWidth - clothWidth) / 2 + 5 // 여자는 오른쪽으로
-            : mannequinX + (mannequinWidth - clothWidth) / 2 - 10; // 남자는 기존 위치 (살짝 왼쪽)
 
         image(clothImage, clothX, clothY, clothWidth, clothHeight);
       }
