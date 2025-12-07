@@ -722,41 +722,36 @@ function loadClothImages() {
   }
   
   // 여성 봄 옷 이미지
-  for (let i = 1; i <= 8; i++) {
+  for (let i = 1; i <= 7; i++) {
     clothImages.female.top[i] = loadImage(`image/여자_봄/봄_상의_${i}.png`);
   }
-  for (let i = 1; i <= 7; i++) {
+  for (let i = 1; i <= 8; i++) {
     clothImages.female.bottom[i] = loadImage(`image/여자_봄/봄_하의_${i}.png`);
   }
   
   // 여성 여름 옷 이미지
   for (let i = 1; i <= 8; i++) {
-    clothImages.female.top[i + 10] = loadImage(`image/여자_여름/여름_상의${i}.png`);
+    clothImages.female.top[i + 10] = loadImage(`image/여자_여름/여름_상의_${i}.png`);
   }
   // 여름 하의는 1-16번까지 있지만, 실제로는 연속적이지 않은 파일들도 있음
-  clothImages.female.bottom[11] = loadImage(`image/여자_여름/여름_하의1.png`);
-  clothImages.female.bottom[12] = loadImage(`image/여자_여름/여름_하의2.png`);
-  clothImages.female.bottom[13] = loadImage(`image/여자_여름/여름_하의3.png`);
-  clothImages.female.bottom[14] = loadImage(`image/여자_여름/여름_하의4.png`);
-  clothImages.female.bottom[15] = loadImage(`image/여자_여름/여름_하의5.png`);
-  clothImages.female.bottom[16] = loadImage(`image/여자_여름/여름_하의6.png`);
-  clothImages.female.bottom[17] = loadImage(`image/여자_여름/여름_하의7.png`);
-  clothImages.female.bottom[18] = loadImage(`image/여자_여름/여름_하의8.png`);
+  for (let i = 1; i <= 10; i++) {
+    clothImages.female.bottom[i + 10] = loadImage(`image/여자_여름/여름_하의_${i}.png`);
+  }
   
   // 여성 가을 옷 이미지
   for (let i = 1; i <= 10; i++) {
-    clothImages.female.top[i + 20] = loadImage(`image/여자_가을/가을_상의${i}.png`);
+    clothImages.female.top[i + 20] = loadImage(`image/여자_가을/가을_상의_${i}.png`);
   }
-  for (let i = 1; i <= 6; i++) {
-    clothImages.female.bottom[i + 20] = loadImage(`image/여자_가을/가을_하의${i}.png`);
+  for (let i = 1; i <= 10; i++) {
+    clothImages.female.bottom[i + 20] = loadImage(`image/여자_가을/가을_하의_${i}.png`);
   }
   
   // 여성 겨울 옷 이미지
   for (let i = 1; i <= 10; i++) {
-    clothImages.female.top[i + 30] = loadImage(`image/여자_겨울/겨울_상의${i}.png`);
+    clothImages.female.top[i + 30] = loadImage(`image/여자_겨울/겨울_상의_${i}.png`);
   }
-  for (let i = 1; i <= 7; i++) {
-    clothImages.female.bottom[i + 30] = loadImage(`image/여자_겨울/겨울_하의${i}.png`);
+  for (let i = 1; i <= 8; i++) {
+    clothImages.female.bottom[i + 30] = loadImage(`image/여자_겨울/겨울_하의_${i}.png`);
   }
   
 }
