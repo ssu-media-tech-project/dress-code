@@ -134,7 +134,7 @@ function renderMannequin(여자마네킹, 남자마네킹) {
     let mannequinWidth, mannequinHeight, mannequinX, mannequinY;
 
     // 성별에 따라 크기 비율 설정
-    let sizeRatio = selectedSex === "male" ? 0.15 : 0.1;
+    let sizeRatio = selectedSex === "male" ? 0.2 : 0.4;
 
     if (mannequinAspect > screenAspect) {
       mannequinHeight = height * sizeRatio;
