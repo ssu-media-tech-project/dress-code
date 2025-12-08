@@ -43,7 +43,7 @@ function mouseReleased() {
 }
  //역할: 드롭 처리 및 드래그 상태 초기화
 
-🎯 핵심 헬퍼 함수들
+핵심 헬퍼 함수들
 
 객체 감지
 
@@ -64,14 +64,14 @@ function isOverDropZone(x, y) {
          y > dropZone.y && y < dropZone.y + dropZone.height;
 }
 
-🔄 드래그 앤 드롭 플로우
+드래그 앤 드롭 플로우
 
-1단계: 준비 📋
+1단계: 준비
 
 let draggedItem = null;
 let isDragging = false;
 
-2단계: 시작 🚀
+2단계: 시작
 
 function mousePressed() {
   draggedItem = findItemAt(mouseX, mouseY);
@@ -163,7 +163,7 @@ function mousePressed() {
 | 감지  | findObjectAt()  | 충돌 검사    | x > obj.x && x < obj.x + w       |
 | 검증  | isOverTarget()  | 드롭 가능 여부 | return inBounds(x, y)            |
 
-🎨 시각적 피드백 효과
+시각적 피드백
 
 function drawDraggedItem() {
   // 반투명 효과
@@ -178,7 +178,7 @@ function drawDraggedItem() {
   noTint();
 }
 
-💡 주요 포인트
+주요 포인트
 
 1. 상태 관리: isDragging, draggedItem 변수로 드래그 상태 추적
 2. 충돌 감지: 마우스 좌표와 객체 경계 비교
@@ -186,16 +186,8 @@ function drawDraggedItem() {
 4. 드롭 검증: 유효한 드롭 영역인지 확인
 5. 상태 초기화: 드래그 완료 후 변수들 리셋
 
-🔧 디버깅 팁
 
-function draw() {
-  // 디버그 정보 표시
-  text(`Mouse: (${mouseX}, ${mouseY})`, 10, 20);
-  text(`Dragging: ${isDragging}`, 10, 40);
-  text(`Selected: ${draggedItem ? draggedItem.name : 'none'}`, 10, 60);
-}
-
-🚀 성능 최적화
+성능 최적화
 
 - 불필요한 충돌 검사 최소화
 - 드래그 중에만 시각적 업데이트
