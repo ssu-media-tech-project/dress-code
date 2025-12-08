@@ -12,7 +12,7 @@ pmouseX, pmouseY      // 이전 프레임 마우스 좌표
 
 마우스 이벤트 함수들
 
-```
+```javascript
 mousePressed()
 
 function mousePressed() {
