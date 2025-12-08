@@ -54,6 +54,18 @@ function isDragInProgress() {
  * @returns {Object|null} 해당 위치의 옷 객체 또는 null
  */
 function findClothAtPosition(x, y) {
+  // 1. 먼저 마네킹 위에 입힌 옷들을 확인 (우선순위 높음)
+  for (let cloth of appliedClothes) {
+    if (cloth._mannequinDisplayInfo) {
+      const { x: itemX, y: itemY, width, height } = cloth._mannequinDisplayInfo;
+
+      if (x > itemX && x < itemX + width && y > itemY && y < itemY + height) {
+        return cloth;
+      }
+    }
+  }
+
+  // 2. 그 다음 옷장 주변의 옷들을 확인
   const clothesToShow = getAvailableClothes();
 
   for (let cloth of clothesToShow) {
@@ -113,6 +125,17 @@ function getMannequinDropArea() {
  * @returns {boolean} 성공적으로 입혔으면 true
  */
 function handleClothDrop(x, y, cloth) {
+  // 마네킹에 입힌 옷을 드래그해서 벗기는 경우
+  if (appliedClothes.includes(cloth)) {
+    // 마네킹 밖으로 드래그하면 옷 벗기기
+    if (!isPositionOverMannequin(x, y)) {
+      appliedClothes = appliedClothes.filter(c => c.id !== cloth.id);
+      return true;
+    }
+    return false; // 마네킹 안에서는 그대로 유지
+  }
+  
+  // 옷장의 옷을 마네킹으로 드래그하는 경우
   if (!isPositionOverMannequin(x, y)) {
     return false;
   }

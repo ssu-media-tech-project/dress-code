@@ -175,6 +175,14 @@ function renderMannequin(여자마네킹, 남자마네킹) {
         let clothX = mannequinX;
 
         image(clothImage, clothX, clothY, clothWidth, clothHeight);
+        
+        // 마네킹 위 옷에 클릭 영역 정보 저장 (벗기기용)
+        cloth._mannequinDisplayInfo = {
+          x: clothX,
+          y: clothY,
+          width: clothWidth,
+          height: clothHeight
+        };
       }
     }
 
@@ -196,6 +204,14 @@ function renderMannequin(여자마네킹, 남자마네킹) {
         let clothX = mannequinX;
 
         image(clothImage, clothX, clothY, clothWidth, clothHeight);
+        
+        // 마네킹 위 옷에 클릭 영역 정보 저장 (벗기기용)
+        cloth._mannequinDisplayInfo = {
+          x: clothX,
+          y: clothY,
+          width: clothWidth,
+          height: clothHeight
+        };
       }
     }
   }
