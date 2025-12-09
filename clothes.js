@@ -666,6 +666,33 @@ function initializeClothes() {
     {id: 107, name: "런닝화 19", category: "shoes", season: "universal", gender: "male", imageId: 19},
     {id: 108, name: "겨울부츠 20", category: "shoes", season: "universal", gender: "male", imageId: 20},
 
+    // 여성 신발 (Shoes) - 계절별로 구분
+    // 봄 신발 (4개)
+    {id: 109, name: "봄 플랫슈즈 1", category: "shoes", season: "spring", gender: "female", imageId: "spring-1"},
+    {id: 110, name: "봄 로퍼 2", category: "shoes", season: "spring", gender: "female", imageId: "spring-2"},
+    {id: 111, name: "봄 운동화 3", category: "shoes", season: "spring", gender: "female", imageId: "spring-3"},
+    {id: 112, name: "봄 앵클부츠 4", category: "shoes", season: "spring", gender: "female", imageId: "spring-4"},
+
+    // 여름 신발 (4개)
+    {id: 113, name: "여름 샌들 1", category: "shoes", season: "summer", gender: "female", imageId: "summer-1"},
+    {id: 114, name: "여름 스트랩힐 2", category: "shoes", season: "summer", gender: "female", imageId: "summer-2"},
+    {id: 115, name: "여름 플립플롭 3", category: "shoes", season: "summer", gender: "female", imageId: "summer-3"},
+    {id: 116, name: "여름 웨지힐 4", category: "shoes", season: "summer", gender: "female", imageId: "summer-4"},
+
+    // 가을 신발 (6개)
+    {id: 117, name: "가을 하이힐 1", category: "shoes", season: "fall", gender: "female", imageId: "fall-1"},
+    {id: 118, name: "가을 부츠 2", category: "shoes", season: "fall", gender: "female", imageId: "fall-2"},
+    {id: 119, name: "가을 옥스퍼드 3", category: "shoes", season: "fall", gender: "female", imageId: "fall-3"},
+    {id: 120, name: "가을 펌프스 4", category: "shoes", season: "fall", gender: "female", imageId: "fall-4"},
+    {id: 121, name: "가을 첼시부츠 5", category: "shoes", season: "fall", gender: "female", imageId: "fall-5"},
+    {id: 122, name: "가을 워커 6", category: "shoes", season: "fall", gender: "female", imageId: "fall-6"},
+
+    // 겨울 신발 (4개)
+    {id: 123, name: "겨울 롱부츠 1", category: "shoes", season: "winter", gender: "female", imageId: "winter-1"},
+    {id: 124, name: "겨울 털부츠 2", category: "shoes", season: "winter", gender: "female", imageId: "winter-2"},
+    {id: 125, name: "겨울 스노우부츠 3", category: "shoes", season: "winter", gender: "female", imageId: "winter-3"},
+    {id: 126, name: "겨울 앵클부츠 4", category: "shoes", season: "winter", gender: "female", imageId: "winter-4"},
+
   ];
 }
 
@@ -699,6 +726,27 @@ function loadClothImages() {
   // 남성 신발 이미지
   for (let i = 1; i <= 20; i++) {
     clothImages.male.shoes[i] = loadImage(`image/clothes/shoes/shoes-${i}.png`);
+  }
+  
+  // 여성 신발 이미지 (계절별)
+  // 봄 신발 (4개)
+  for (let i = 1; i <= 4; i++) {
+    clothImages.female.shoes[`spring-${i}`] = loadImage(`image/여자_봄/봄_신발_${i}.png`);
+  }
+  
+  // 여름 신발 (4개)
+  for (let i = 1; i <= 4; i++) {
+    clothImages.female.shoes[`summer-${i}`] = loadImage(`image/여자_여름/여름_신발_${i}.png`);
+  }
+  
+  // 가을 신발 (6개)
+  for (let i = 1; i <= 6; i++) {
+    clothImages.female.shoes[`fall-${i}`] = loadImage(`image/여자_가을/가을_신발_${i}.png`);
+  }
+  
+  // 겨울 신발 (4개)  
+  for (let i = 1; i <= 4; i++) {
+    clothImages.female.shoes[`winter-${i}`] = loadImage(`image/여자_겨울/겨울_신발_${i}.png`);
   }
   
   // 여성 봄 옷 이미지

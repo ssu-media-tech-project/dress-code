@@ -191,15 +191,10 @@ function renderMannequin(여자마네킹, 남자마네킹) {
         let clothY = mannequinY;
         let clothWidth = mannequinWidth;
         let clothHeight = mannequinHeight;
-        let clothX = mannequinX;
+        let clothX = mannequinX + 5; // 오른쪽으로 5px 이동
 
-        // 신발 이미지도 하단 크롭 적용
-        let cropRatio = 0.4; // 하단 40%만 사용
-        let srcY = clothImage.height * (1 - cropRatio);
-        let srcHeight = clothImage.height * cropRatio;
-        
-        image(clothImage, clothX, clothY, clothWidth, clothHeight, 
-              0, srcY, clothImage.width, srcHeight);
+        // 신발은 전체 이미지 사용 (크롭 안함)
+        image(clothImage, clothX, clothY, clothWidth, clothHeight);
         
         // 마네킹 위 옷에 클릭 영역 정보 저장 (벗기기용)
         cloth._mannequinDisplayInfo = {
