@@ -4,11 +4,13 @@
 let clothImages = {
   male: {
     top: {},
-    bottom: {}
+    bottom: {},
+    shoes: {}
   },
   female: {
     top: {},
-    bottom: {}
+    bottom: {},
+    shoes: {}
   }
 };
 
@@ -642,6 +644,28 @@ function initializeClothes() {
       imageId: 37,
     },
 
+    // 남성 신발 (Shoes) - shoes-1.png ~ shoes-20.png
+    {id: 89, name: "운동화 1", category: "shoes", season: "universal", gender: "male", imageId: 1},
+    {id: 90, name: "캐주얼화 2", category: "shoes", season: "universal", gender: "male", imageId: 2},
+    {id: 91, name: "정장화 3", category: "shoes", season: "universal", gender: "male", imageId: 3},
+    {id: 92, name: "부츠 4", category: "shoes", season: "universal", gender: "male", imageId: 4},
+    {id: 93, name: "샌들 5", category: "shoes", season: "universal", gender: "male", imageId: 5},
+    {id: 94, name: "로퍼 6", category: "shoes", season: "universal", gender: "male", imageId: 6},
+    {id: 95, name: "하이탑 7", category: "shoes", season: "universal", gender: "male", imageId: 7},
+    {id: 96, name: "슬리퍼 8", category: "shoes", season: "universal", gender: "male", imageId: 8},
+    {id: 97, name: "워킹화 9", category: "shoes", season: "universal", gender: "male", imageId: 9},
+    {id: 98, name: "드레스화 10", category: "shoes", season: "universal", gender: "male", imageId: 10},
+    {id: 99, name: "농구화 11", category: "shoes", season: "universal", gender: "male", imageId: 11},
+    {id: 100, name: "트레킹화 12", category: "shoes", season: "universal", gender: "male", imageId: 12},
+    {id: 101, name: "컨버스 13", category: "shoes", season: "universal", gender: "male", imageId: 13},
+    {id: 102, name: "구두 14", category: "shoes", season: "universal", gender: "male", imageId: 14},
+    {id: 103, name: "캔버스화 15", category: "shoes", season: "universal", gender: "male", imageId: 15},
+    {id: 104, name: "스니커즈 16", category: "shoes", season: "universal", gender: "male", imageId: 16},
+    {id: 105, name: "어글리 17", category: "shoes", season: "universal", gender: "male", imageId: 17},
+    {id: 106, name: "플랫폼 18", category: "shoes", season: "universal", gender: "male", imageId: 18},
+    {id: 107, name: "런닝화 19", category: "shoes", season: "universal", gender: "male", imageId: 19},
+    {id: 108, name: "겨울부츠 20", category: "shoes", season: "universal", gender: "male", imageId: 20},
+
   ];
 }
 
@@ -670,6 +694,11 @@ function loadClothImages() {
   for (let i = 1; i <= 10; i++) {
     clothImages.male.top[`winter-${i}`] = loadImage(`image/clothes/top/winter-top-${i}.png`);
     clothImages.male.bottom[`winter-${i}`] = loadImage(`image/clothes/bottom/winter-bottom-${i}.png`);
+  }
+  
+  // 남성 신발 이미지
+  for (let i = 1; i <= 20; i++) {
+    clothImages.male.shoes[i] = loadImage(`image/clothes/shoes/shoes-${i}.png`);
   }
   
   // 여성 봄 옷 이미지

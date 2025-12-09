@@ -83,20 +83,46 @@ function findClothAtPosition(x, y) {
       } else if (position === "right") {
         currentScrollOffset = bottomScrollOffset;
         itemY = baseY - currentScrollOffset;
+      } else if (position === "bottom") {
+        // 신발은 가로 스크롤
+        currentScrollOffset = shoesScrollOffset;
+        itemX = baseX - currentScrollOffset;
       }
       
       // 현재 가시성 확인
-      let isCurrentlyVisible = itemY + height >= clipY && itemY <= clipY + clipHeight;
+      let isCurrentlyVisible;
+      if (position === "bottom") {
+        // 신발은 가로 스크롤이므로 X축 기준으로 가시성 확인
+        const { clipX, clipWidth } = cloth._displayInfo;
+        isCurrentlyVisible = itemX + width >= clipX && itemX <= clipX + clipWidth;
+      } else {
+        // 상의/하의는 세로 스크롤이므로 Y축 기준으로 가시성 확인
+        isCurrentlyVisible = itemY + height >= clipY && itemY <= clipY + clipHeight;
+      }
       
       if (isCurrentlyVisible) {
         // 클리핑된 영역을 고려한 클릭 감지
-        let clickableY = Math.max(itemY, clipY);
-        let clickableHeight = Math.min(itemY + height, clipY + clipHeight) - clickableY;
-        
-        if (clickableHeight > 0 && 
-            x > itemX && x < itemX + width && 
-            y > clickableY && y < clickableY + clickableHeight) {
-          return cloth;
+        if (position === "bottom") {
+          // 신발은 가로 클리핑
+          const { clipX, clipWidth } = cloth._displayInfo;
+          let clickableX = Math.max(itemX, clipX);
+          let clickableWidth = Math.min(itemX + width, clipX + clipWidth) - clickableX;
+          
+          if (clickableWidth > 0 && 
+              x > clickableX && x < clickableX + clickableWidth && 
+              y > itemY && y < itemY + height) {
+            return cloth;
+          }
+        } else {
+          // 상의/하의는 세로 클리핑
+          let clickableY = Math.max(itemY, clipY);
+          let clickableHeight = Math.min(itemY + height, clipY + clipHeight) - clickableY;
+          
+          if (clickableHeight > 0 && 
+              x > itemX && x < itemX + width && 
+              y > clickableY && y < clickableY + clickableHeight) {
+            return cloth;
+          }
         }
       }
     }
@@ -205,8 +231,9 @@ function checkGameCompletion() {
 function hasAllRequiredClothingTypes() {
   const hasTop = appliedClothes.some((c) => c.category === "top");
   const hasBottom = appliedClothes.some((c) => c.category === "bottom");
+  const hasShoes = appliedClothes.some((c) => c.category === "shoes");
 
-  return hasTop && hasBottom;
+  return hasTop && hasBottom && hasShoes;
 }
 
 /**

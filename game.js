@@ -29,6 +29,8 @@ let topScrollOffset = 0;
 let maxTopScrollOffset = 0;
 let bottomScrollOffset = 0;
 let maxBottomScrollOffset = 0;
+let shoesScrollOffset = 0;
+let maxShoesScrollOffset = 0;
 
 // 로딩 관련 변수
 let loadingStartTime = 0;
@@ -58,6 +60,8 @@ function initializeGame() {
   maxTopScrollOffset = 0;
   bottomScrollOffset = 0;
   maxBottomScrollOffset = 0;
+  shoesScrollOffset = 0;
+  maxShoesScrollOffset = 0;
   
   initializeDragState();
   loadingStartTime = millis();
@@ -171,8 +175,43 @@ function renderMannequin(여자마네킹, 남자마네킹) {
       mannequinHeight
     );
 
-    // 마네킹에 입힌 옷 이미지 렌더링 (하의 먼저, 상의 나중에)
-    // 1. 먼저 하의(바지) 렌더링
+    // 마네킹에 입힌 옷 이미지 렌더링 (신발 먼저, 하의, 상의 순서)
+    // 1. 먼저 신발 렌더링 (가장 아래)
+    for (let cloth of appliedClothes) {
+      if (
+        cloth.category === "shoes" &&
+        cloth.imageId &&
+        clothImages[selectedSex] &&
+        clothImages[selectedSex][cloth.category] &&
+        clothImages[selectedSex][cloth.category][cloth.imageId]
+      ) {
+        let clothImage =
+          clothImages[selectedSex][cloth.category][cloth.imageId];
+
+        let clothY = mannequinY;
+        let clothWidth = mannequinWidth;
+        let clothHeight = mannequinHeight;
+        let clothX = mannequinX;
+
+        // 신발 이미지도 하단 크롭 적용
+        let cropRatio = 0.4; // 하단 40%만 사용
+        let srcY = clothImage.height * (1 - cropRatio);
+        let srcHeight = clothImage.height * cropRatio;
+        
+        image(clothImage, clothX, clothY, clothWidth, clothHeight, 
+              0, srcY, clothImage.width, srcHeight);
+        
+        // 마네킹 위 옷에 클릭 영역 정보 저장 (벗기기용)
+        cloth._mannequinDisplayInfo = {
+          x: clothX,
+          y: clothY,
+          width: clothWidth,
+          height: clothHeight
+        };
+      }
+    }
+    
+    // 2. 그 다음 하의(바지) 렌더링
     for (let cloth of appliedClothes) {
       if (
         cloth.category === "bottom" &&
@@ -201,7 +240,7 @@ function renderMannequin(여자마네킹, 남자마네킹) {
       }
     }
 
-    // 2. 그 다음 상의 렌더링 (바지를 덮도록)
+    // 3. 마지막으로 상의 렌더링 (가장 위)
     for (let cloth of appliedClothes) {
       if (
         cloth.category === "top" &&
@@ -644,9 +683,10 @@ function drawClothesAroundMannequin() {
     cloth => cloth.gender === selectedSex
   );
 
-  // 카테고리별로 분류 (신발 제외)
+  // 카테고리별로 분류
   let tops = clothesToShow.filter(cloth => cloth.category === "top");
   let bottoms = clothesToShow.filter(cloth => cloth.category === "bottom");
+  let shoes = clothesToShow.filter(cloth => cloth.category === "shoes");
 
   let itemSize = 120;
   let spacing = 30;
@@ -656,6 +696,9 @@ function drawClothesAroundMannequin() {
   
   // 하의들을 오른쪽에 배치  
   drawClothesCategory(bottoms, "right", itemSize, spacing, "하의");
+  
+  // 신발들을 하단에 배치 (가로 스크롤)
+  drawShoesCategory(shoes, itemSize, spacing, "신발");
 }
 
 // 특정 카테고리의 옷들을 지정된 위치에 그리기
@@ -845,6 +888,153 @@ function drawClothesScrollbar(position, startX, itemSize, spacing, scrollableAre
   }
 }
 
+// 신발 카테고리 그리기 (하단 가로 스크롤)
+function drawShoesCategory(shoes, itemSize, spacing, categoryName) {
+  if (shoes.length === 0) return;
+  
+  let shoesAreaHeight = 150;
+  let startY = height - shoesAreaHeight + 20;
+  let scrollableAreaWidth = width - 100; // 좌우 여백
+  let startX = 50;
+  
+  // 전체 콘텐츠 너비 계산
+  let totalContentWidth = shoes.length * (itemSize + spacing);
+  
+  // 신발 스크롤 오프셋 계산
+  maxShoesScrollOffset = Math.max(0, totalContentWidth - scrollableAreaWidth);
+  shoesScrollOffset = constrain(shoesScrollOffset, 0, maxShoesScrollOffset);
+  
+  // 카테고리 라벨
+  fill(255);
+  stroke(0);
+  strokeWeight(2);
+  textSize(18);
+  textAlign(CENTER, CENTER);
+  text(categoryName, width / 2, startY - 20);
+  
+  // 스크롤된 시작 위치 계산
+  let scrolledStartX = startX - shoesScrollOffset;
+  
+  // 클리핑 영역 설정
+  let clipX = startX;
+  let clipY = startY;
+  let clipWidth = scrollableAreaWidth;
+  let clipHeight = itemSize;
+  
+  // 신발 아이템들 그리기
+  for (let i = 0; i < shoes.length; i++) {
+    let shoe = shoes[i];
+    let itemX = scrolledStartX + i * (itemSize + spacing);
+    let itemY = startY;
+    
+    // 모든 아이템에 대해 클릭 영역 저장
+    shoe._displayInfo = {
+      x: itemX,
+      y: itemY,
+      width: itemSize,
+      height: itemSize,
+      // 메타데이터 (스크롤 계산용)
+      baseX: startX + i * (itemSize + spacing),
+      baseY: startY,
+      position: "bottom",
+      clipX: clipX,
+      clipWidth: clipWidth,
+      clipY: clipY,
+      clipHeight: clipHeight,
+      isVisible: itemX + itemSize >= clipX && itemX <= clipX + clipWidth
+    };
+    
+    // 화면에 보이는 아이템만 그리기
+    if (itemX + itemSize >= clipX && itemX <= clipX + clipWidth) {
+      // 선택된 신발인지 확인
+      let isSelected = appliedClothes.some(c => c.id === shoe.id);
+      
+      // 호버 감지 (클리핑 영역 내에서만)
+      let isHovered = mouseX > Math.max(itemX, clipX) && 
+                      mouseX < Math.min(itemX + itemSize, clipX + clipWidth) &&
+                      mouseY > itemY && mouseY < itemY + itemSize;
+      
+      // 선택된 신발만 테두리 표시
+      if (isSelected) {
+        noFill();
+        stroke(100, 200, 255);
+        strokeWeight(3);
+        // 클리핑된 사각형 그리기
+        let visibleX = Math.max(itemX, clipX);
+        let visibleWidth = Math.min(itemX + itemSize, clipX + clipWidth) - visibleX;
+        rect(visibleX, itemY, visibleWidth, itemSize, 10);
+      } else if (isHovered) {
+        noFill();
+        stroke(255, 255, 255, 150);
+        strokeWeight(2);
+        // 클리핑된 사각형 그리기
+        let visibleX = Math.max(itemX, clipX);
+        let visibleWidth = Math.min(itemX + itemSize, clipX + clipWidth) - visibleX;
+        rect(visibleX, itemY, visibleWidth, itemSize, 10);
+      }
+      
+      // 신발 이미지 표시 (하단 크롭)
+      if (shoe.imageId && 
+          clothImages[selectedSex] && 
+          clothImages[selectedSex][shoe.category] && 
+          clothImages[selectedSex][shoe.category][shoe.imageId]) {
+        let shoeImage = clothImages[selectedSex][shoe.category][shoe.imageId];
+        let imgSize = itemSize - 10;
+        let imgX = itemX + 5;
+        let imgY = itemY + 5;
+        
+        // 클리핑된 이미지 그리기
+        if (imgX + imgSize > clipX && imgX < clipX + clipWidth) {
+          let visibleImgX = Math.max(imgX, clipX);
+          let visibleImgWidth = Math.min(imgX + imgSize, clipX + clipWidth) - visibleImgX;
+          
+          if (visibleImgWidth > 0) {
+            let srcX = visibleImgX - imgX;
+            let srcWidth = visibleImgWidth;
+            
+            // 신발 이미지 크롭: 이미지 하단 부분만 사용 (신발이 하단에 있다고 가정)
+            let cropRatio = 0.4; // 이미지의 하단 40%만 사용
+            let imgSrcX = (srcX / imgSize) * shoeImage.width;
+            let imgSrcWidth = (srcWidth / imgSize) * shoeImage.width;
+            let imgSrcY = shoeImage.height * (1 - cropRatio); // 하단 부분 시작점
+            let imgSrcHeight = shoeImage.height * cropRatio; // 하단 40%
+            
+            image(shoeImage, visibleImgX, imgY, srcWidth, imgSize, 
+                  imgSrcX, imgSrcY, imgSrcWidth, imgSrcHeight);
+          }
+        }
+      }
+    }
+  }
+  
+  // 신발 스크롤바 그리기
+  if (maxShoesScrollOffset > 0) {
+    drawShoesScrollbar(startX, startY, scrollableAreaWidth, shoesScrollOffset, maxShoesScrollOffset);
+  }
+}
+
+// 신발 스크롤바 그리기
+function drawShoesScrollbar(startX, startY, scrollableAreaWidth, currentScrollOffset, currentMaxScrollOffset) {
+  let scrollbarHeight = 8;
+  let scrollbarWidth = scrollableAreaWidth - 20;
+  let scrollbarX = startX + 10;
+  let scrollbarY = startY + 130;
+  
+  // 스크롤바 배경
+  fill(200, 200, 200, 100);
+  noStroke();
+  rect(scrollbarX, scrollbarY, scrollbarWidth, scrollbarHeight, 4);
+  
+  // 스크롤바 핸들
+  if (currentMaxScrollOffset > 0) {
+    let handleWidth = Math.max(20, (scrollableAreaWidth / (scrollableAreaWidth + currentMaxScrollOffset)) * scrollbarWidth);
+    let handleX = scrollbarX + (currentScrollOffset / currentMaxScrollOffset) * (scrollbarWidth - handleWidth);
+    
+    fill(150, 150, 150);
+    rect(handleX, scrollbarY + 1, handleWidth, scrollbarHeight - 2, 4);
+  }
+}
+
 // 마우스 휠 이벤트 처리 수정
 function mouseWheel(event) {
   if (isWardrobeOpen && maxScrollOffset > 0) {
@@ -860,8 +1050,14 @@ function mouseWheel(event) {
     // 마우스 위치에 따라 어느 영역을 스크롤할지 결정
     let leftAreaWidth = 30 + (2 * 120) + 30 + 50; // 왼쪽 영역 범위
     let rightAreaStart = width - leftAreaWidth;
+    let shoesAreaStart = height - 150; // 신발 영역 시작
     
-    if (mouseX < leftAreaWidth && maxTopScrollOffset > 0) {
+    if (mouseY > shoesAreaStart && maxShoesScrollOffset > 0) {
+      // 신발(하단) 가로 스크롤
+      shoesScrollOffset += event.delta * scrollSpeed;
+      shoesScrollOffset = constrain(shoesScrollOffset, 0, maxShoesScrollOffset);
+      return false;
+    } else if (mouseX < leftAreaWidth && maxTopScrollOffset > 0) {
       // 상의(왼쪽) 스크롤
       topScrollOffset += event.delta * scrollSpeed;
       topScrollOffset = constrain(topScrollOffset, 0, maxTopScrollOffset);
