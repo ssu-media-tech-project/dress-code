@@ -16,169 +16,101 @@ let clothImages = {
 function initializeClothes() {
   return [
     // 남성 의류
-    // 상의 (Top)
-    {
-      id: 1,
-      name: "봄 셔츠",
-      category: "top",
-      season: "spring",
-      gender: "male",
-      imageId: 1,
-    },
-    {
-      id: 2,
-      name: "봄 후드티",
-      category: "top",
-      season: "spring",
-      gender: "male",
-      imageId: 2,
-    },
-    {
-      id: 3,
-      name: "여름 반팔",
-      category: "top",
-      season: "summer",
-      gender: "male",
-      imageId: 3,
-    },
-    {
-      id: 4,
-      name: "여름 민소매",
-      category: "top",
-      season: "summer",
-      gender: "male",
-      imageId: 4,
-    },
-    {
-      id: 5,
-      name: "가을 긴팔",
-      category: "top",
-      season: "fall",
-      gender: "male",
-      imageId: 5,
-    },
-    {
-      id: 6,
-      name: "가을 니트",
-      category: "top",
-      season: "fall",
-      gender: "male",
-      imageId: 6,
-    },
-    {
-      id: 7,
-      name: "겨울 패딩",
-      category: "top",
-      season: "winter",
-      gender: "male",
-      imageId: 7,
-    },
-    {
-      id: 8,
-      name: "겨울 코트",
-      category: "top",
-      season: "winter",
-      gender: "male",
-      imageId: 8,
-    },
-    {
-      id: 9,
-      name: "기본 티셔츠",
-      category: "top",
-      season: "universal",
-      gender: "male",
-      imageId: 9,
-    },
-    {
-      id: 10,
-      name: "기본 셔츠",
-      category: "top",
-      season: "universal",
-      gender: "male",
-      imageId: 10,
-    },
+    // 봄 상의 (Top) - spring-top-1.png ~ spring-top-10.png
+    {id: 1, name: "봄 셔츠 1", category: "top", season: "spring", gender: "male", imageId: "spring-1"},
+    {id: 2, name: "봄 후드티 2", category: "top", season: "spring", gender: "male", imageId: "spring-2"},
+    {id: 3, name: "봄 가디건 3", category: "top", season: "spring", gender: "male", imageId: "spring-3"},
+    {id: 4, name: "봄 니트 4", category: "top", season: "spring", gender: "male", imageId: "spring-4"},
+    {id: 5, name: "봄 재킷 5", category: "top", season: "spring", gender: "male", imageId: "spring-5"},
+    {id: 6, name: "봄 블레이저 6", category: "top", season: "spring", gender: "male", imageId: "spring-6"},
+    {id: 7, name: "봄 카디건 7", category: "top", season: "spring", gender: "male", imageId: "spring-7"},
+    {id: 8, name: "봄 스웨터 8", category: "top", season: "spring", gender: "male", imageId: "spring-8"},
+    {id: 9, name: "봄 티셔츠 9", category: "top", season: "spring", gender: "male", imageId: "spring-9"},
+    {id: 10, name: "봄 풀오버 10", category: "top", season: "spring", gender: "male", imageId: "spring-10"},
 
-    // 하의 (Bottom)
-    {
-      id: 11,
-      name: "봄 청바지",
-      category: "bottom",
-      season: "spring",
-      gender: "male",
-      imageId: 1,
-    },
-    {
-      id: 12,
-      name: "봄 면바지",
-      category: "bottom",
-      season: "spring",
-      gender: "male",
-      imageId: 2,
-    },
-    {
-      id: 13,
-      name: "여름 반바지",
-      category: "bottom",
-      season: "summer",
-      gender: "male",
-      imageId: 3,
-    },
-    {
-      id: 14,
-      name: "여름 린넨바지",
-      category: "bottom",
-      season: "summer",
-      gender: "male",
-      imageId: 4,
-    },
-    {
-      id: 15,
-      name: "가을 슬랙스",
-      category: "bottom",
-      season: "fall",
-      gender: "male",
-      imageId: 5,
-    },
-    {
-      id: 16,
-      name: "가을 청바지",
-      category: "bottom",
-      season: "fall",
-      gender: "male",
-      imageId: 6,
-    },
-    {
-      id: 17,
-      name: "겨울 기모바지",
-      category: "bottom",
-      season: "winter",
-      gender: "male",
-      imageId: 7,
-    },
-    {
-      id: 18,
-      name: "겨울 정장바지",
-      category: "bottom",
-      season: "winter",
-      gender: "male",
-      imageId: 8,
-    },
-    {
-      id: 19,
-      name: "기본 청바지",
-      category: "bottom",
-      season: "universal",
-      gender: "male",
-      imageId: 9,
-    },
-    {
-      id: 20,
-      name: "기본 면바지",
-      category: "bottom",
-      season: "universal",
-      gender: "male",
-      imageId: 10,
-    },
+    // 여름 상의 (Top) - summer-top-1.png ~ summer-top-10.png  
+    {id: 11, name: "여름 반팔 1", category: "top", season: "summer", gender: "male", imageId: "summer-1"},
+    {id: 12, name: "여름 민소매 2", category: "top", season: "summer", gender: "male", imageId: "summer-2"},
+    {id: 13, name: "여름 폴로 3", category: "top", season: "summer", gender: "male", imageId: "summer-3"},
+    {id: 14, name: "여름 티셔츠 4", category: "top", season: "summer", gender: "male", imageId: "summer-4"},
+    {id: 15, name: "여름 린넨셔츠 5", category: "top", season: "summer", gender: "male", imageId: "summer-5"},
+    {id: 16, name: "여름 탱크탑 6", category: "top", season: "summer", gender: "male", imageId: "summer-6"},
+    {id: 17, name: "여름 셔츠 7", category: "top", season: "summer", gender: "male", imageId: "summer-7"},
+    {id: 18, name: "여름 헨리넥 8", category: "top", season: "summer", gender: "male", imageId: "summer-8"},
+    {id: 19, name: "여름 브이넥 9", category: "top", season: "summer", gender: "male", imageId: "summer-9"},
+    {id: 20, name: "여름 라운드넥 10", category: "top", season: "summer", gender: "male", imageId: "summer-10"},
+
+    // 가을 상의 (Top) - fall-top-1.png ~ fall-top-10.png
+    {id: 21, name: "가을 긴팔 1", category: "top", season: "fall", gender: "male", imageId: "fall-1"},
+    {id: 22, name: "가을 니트 2", category: "top", season: "fall", gender: "male", imageId: "fall-2"},
+    {id: 23, name: "가을 스웨터 3", category: "top", season: "fall", gender: "male", imageId: "fall-3"},
+    {id: 24, name: "가을 후드티 4", category: "top", season: "fall", gender: "male", imageId: "fall-4"},
+    {id: 25, name: "가을 가디건 5", category: "top", season: "fall", gender: "male", imageId: "fall-5"},
+    {id: 26, name: "가을 자켓 6", category: "top", season: "fall", gender: "male", imageId: "fall-6"},
+    {id: 27, name: "가을 블레이저 7", category: "top", season: "fall", gender: "male", imageId: "fall-7"},
+    {id: 28, name: "가을 코트 8", category: "top", season: "fall", gender: "male", imageId: "fall-8"},
+    {id: 29, name: "가을 트렌치 9", category: "top", season: "fall", gender: "male", imageId: "fall-9"},
+    {id: 30, name: "가을 풀오버 10", category: "top", season: "fall", gender: "male", imageId: "fall-10"},
+
+    // 겨울 상의 (Top) - winter-top-1.png ~ winter-top-10.png
+    {id: 31, name: "겨울 패딩 1", category: "top", season: "winter", gender: "male", imageId: "winter-1"},
+    {id: 32, name: "겨울 코트 2", category: "top", season: "winter", gender: "male", imageId: "winter-2"},
+    {id: 33, name: "겨울 두꺼운니트 3", category: "top", season: "winter", gender: "male", imageId: "winter-3"},
+    {id: 34, name: "겨울 후드티 4", category: "top", season: "winter", gender: "male", imageId: "winter-4"},
+    {id: 35, name: "겨울 자켓 5", category: "top", season: "winter", gender: "male", imageId: "winter-5"},
+    {id: 36, name: "겨울 파카 6", category: "top", season: "winter", gender: "male", imageId: "winter-6"},
+    {id: 37, name: "겨울 무스탕 7", category: "top", season: "winter", gender: "male", imageId: "winter-7"},
+    {id: 38, name: "겨울 플리스 8", category: "top", season: "winter", gender: "male", imageId: "winter-8"},
+    {id: 39, name: "겨울 스웨터 9", category: "top", season: "winter", gender: "male", imageId: "winter-9"},
+    {id: 40, name: "겨울 터틀넥 10", category: "top", season: "winter", gender: "male", imageId: "winter-10"},
+
+    // 봄 하의 (Bottom) - spring-bottom-1.png ~ spring-bottom-10.png
+    {id: 41, name: "봄 청바지 1", category: "bottom", season: "spring", gender: "male", imageId: "spring-1"},
+    {id: 42, name: "봄 면바지 2", category: "bottom", season: "spring", gender: "male", imageId: "spring-2"},
+    {id: 43, name: "봄 슬랙스 3", category: "bottom", season: "spring", gender: "male", imageId: "spring-3"},
+    {id: 44, name: "봄 치노팬츠 4", category: "bottom", season: "spring", gender: "male", imageId: "spring-4"},
+    {id: 45, name: "봄 카고팬츠 5", category: "bottom", season: "spring", gender: "male", imageId: "spring-5"},
+    {id: 46, name: "봄 조거팬츠 6", category: "bottom", season: "spring", gender: "male", imageId: "spring-6"},
+    {id: 47, name: "봄 정장바지 7", category: "bottom", season: "spring", gender: "male", imageId: "spring-7"},
+    {id: 48, name: "봄 린넨팬츠 8", category: "bottom", season: "spring", gender: "male", imageId: "spring-8"},
+    {id: 49, name: "봄 데님팬츠 9", category: "bottom", season: "spring", gender: "male", imageId: "spring-9"},
+    {id: 50, name: "봄 트레이닝팬츠 10", category: "bottom", season: "spring", gender: "male", imageId: "spring-10"},
+
+    // 여름 하의 (Bottom) - summer-bottom-1.png ~ summer-bottom-10.png
+    {id: 51, name: "여름 반바지 1", category: "bottom", season: "summer", gender: "male", imageId: "summer-1"},
+    {id: 52, name: "여름 린넨바지 2", category: "bottom", season: "summer", gender: "male", imageId: "summer-2"},
+    {id: 53, name: "여름 하프팬츠 3", category: "bottom", season: "summer", gender: "male", imageId: "summer-3"},
+    {id: 54, name: "여름 보드숏 4", category: "bottom", season: "summer", gender: "male", imageId: "summer-4"},
+    {id: 55, name: "여름 치노숏 5", category: "bottom", season: "summer", gender: "male", imageId: "summer-5"},
+    {id: 56, name: "여름 데님숏 6", category: "bottom", season: "summer", gender: "male", imageId: "summer-6"},
+    {id: 57, name: "여름 카고숏 7", category: "bottom", season: "summer", gender: "male", imageId: "summer-7"},
+    {id: 58, name: "여름 스윔숏 8", category: "bottom", season: "summer", gender: "male", imageId: "summer-8"},
+    {id: 59, name: "여름 트레이닝숏 9", category: "bottom", season: "summer", gender: "male", imageId: "summer-9"},
+    {id: 60, name: "여름 면바지 10", category: "bottom", season: "summer", gender: "male", imageId: "summer-10"},
+
+    // 가을 하의 (Bottom) - fall-bottom-1.png ~ fall-bottom-10.png
+    {id: 61, name: "가을 슬랙스 1", category: "bottom", season: "fall", gender: "male", imageId: "fall-1"},
+    {id: 62, name: "가을 청바지 2", category: "bottom", season: "fall", gender: "male", imageId: "fall-2"},
+    {id: 63, name: "가을 코듀로이 3", category: "bottom", season: "fall", gender: "male", imageId: "fall-3"},
+    {id: 64, name: "가을 울팬츠 4", category: "bottom", season: "fall", gender: "male", imageId: "fall-4"},
+    {id: 65, name: "가을 치노팬츠 5", category: "bottom", season: "fall", gender: "male", imageId: "fall-5"},
+    {id: 66, name: "가을 정장바지 6", category: "bottom", season: "fall", gender: "male", imageId: "fall-6"},
+    {id: 67, name: "가을 카고팬츠 7", category: "bottom", season: "fall", gender: "male", imageId: "fall-7"},
+    {id: 68, name: "가을 데님팬츠 8", category: "bottom", season: "fall", gender: "male", imageId: "fall-8"},
+    {id: 69, name: "가을 면바지 9", category: "bottom", season: "fall", gender: "male", imageId: "fall-9"},
+    {id: 70, name: "가을 트레이닝팬츠 10", category: "bottom", season: "fall", gender: "male", imageId: "fall-10"},
+
+    // 겨울 하의 (Bottom) - winter-bottom-1.png ~ winter-bottom-10.png
+    {id: 71, name: "겨울 기모바지 1", category: "bottom", season: "winter", gender: "male", imageId: "winter-1"},
+    {id: 72, name: "겨울 정장바지 2", category: "bottom", season: "winter", gender: "male", imageId: "winter-2"},
+    {id: 73, name: "겨울 두꺼운청바지 3", category: "bottom", season: "winter", gender: "male", imageId: "winter-3"},
+    {id: 74, name: "겨울 울바지 4", category: "bottom", season: "winter", gender: "male", imageId: "winter-4"},
+    {id: 75, name: "겨울 기모청바지 5", category: "bottom", season: "winter", gender: "male", imageId: "winter-5"},
+    {id: 76, name: "겨울 패딩바지 6", category: "bottom", season: "winter", gender: "male", imageId: "winter-6"},
+    {id: 77, name: "겨울 플리스바지 7", category: "bottom", season: "winter", gender: "male", imageId: "winter-7"},
+    {id: 78, name: "겨울 보온바지 8", category: "bottom", season: "winter", gender: "male", imageId: "winter-8"},
+    {id: 79, name: "겨울 스키바지 9", category: "bottom", season: "winter", gender: "male", imageId: "winter-9"},
+    {id: 80, name: "겨울 두꺼운면바지 10", category: "bottom", season: "winter", gender: "male", imageId: "winter-10"},
 
 
     // 여성 의류
@@ -715,10 +647,29 @@ function initializeClothes() {
 
 // 옷 이미지 로드 함수
 function loadClothImages() {
-  // 남성 기존 옷 이미지 (fall 시리즈로 통일)
+  // 남성 옷 이미지 (모든 계절)
+  // 봄 옷
   for (let i = 1; i <= 10; i++) {
-    clothImages.male.top[i] = loadImage(`image/clothes/top/fall-top-${i}.png`);
-    clothImages.male.bottom[i] = loadImage(`image/clothes/bottom/fall-bottom-${i}.png`);
+    clothImages.male.top[`spring-${i}`] = loadImage(`image/clothes/top/spring-top-${i}.png`);
+    clothImages.male.bottom[`spring-${i}`] = loadImage(`image/clothes/bottom/spring-bottom-${i}.png`);
+  }
+  
+  // 여름 옷
+  for (let i = 1; i <= 10; i++) {
+    clothImages.male.top[`summer-${i}`] = loadImage(`image/clothes/top/summer-top-${i}.png`);
+    clothImages.male.bottom[`summer-${i}`] = loadImage(`image/clothes/bottom/summer-bottom-${i}.png`);
+  }
+  
+  // 가을 옷
+  for (let i = 1; i <= 10; i++) {
+    clothImages.male.top[`fall-${i}`] = loadImage(`image/clothes/top/fall-top-${i}.png`);
+    clothImages.male.bottom[`fall-${i}`] = loadImage(`image/clothes/bottom/fall-bottom-${i}.png`);
+  }
+  
+  // 겨울 옷
+  for (let i = 1; i <= 10; i++) {
+    clothImages.male.top[`winter-${i}`] = loadImage(`image/clothes/top/winter-top-${i}.png`);
+    clothImages.male.bottom[`winter-${i}`] = loadImage(`image/clothes/bottom/winter-bottom-${i}.png`);
   }
   
   // 여성 봄 옷 이미지

@@ -70,10 +70,34 @@ function findClothAtPosition(x, y) {
 
   for (let cloth of clothesToShow) {
     if (cloth._displayInfo) {
-      const { x: itemX, y: itemY, width, height } = cloth._displayInfo;
-
-      if (x > itemX && x < itemX + width && y > itemY && y < itemY + height) {
-        return cloth;
+      const { baseX, baseY, width, height, position, clipY, clipHeight } = cloth._displayInfo;
+      
+      // 현재 스크롤을 고려한 실제 위치 계산
+      let currentScrollOffset = 0;
+      let itemX = baseX;
+      let itemY = baseY;
+      
+      if (position === "left") {
+        currentScrollOffset = topScrollOffset;
+        itemY = baseY - currentScrollOffset;
+      } else if (position === "right") {
+        currentScrollOffset = bottomScrollOffset;
+        itemY = baseY - currentScrollOffset;
+      }
+      
+      // 현재 가시성 확인
+      let isCurrentlyVisible = itemY + height >= clipY && itemY <= clipY + clipHeight;
+      
+      if (isCurrentlyVisible) {
+        // 클리핑된 영역을 고려한 클릭 감지
+        let clickableY = Math.max(itemY, clipY);
+        let clickableHeight = Math.min(itemY + height, clipY + clipHeight) - clickableY;
+        
+        if (clickableHeight > 0 && 
+            x > itemX && x < itemX + width && 
+            y > clickableY && y < clickableY + clickableHeight) {
+          return cloth;
+        }
       }
     }
   }

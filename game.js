@@ -24,6 +24,12 @@ let isWardrobeOpen = false;
 let scrollOffset = 0;
 let maxScrollOffset = 0;
 
+// 옷 영역 스크롤 관련 변수
+let topScrollOffset = 0;
+let maxTopScrollOffset = 0;
+let bottomScrollOffset = 0;
+let maxBottomScrollOffset = 0;
+
 // 로딩 관련 변수
 let loadingStartTime = 0;
 
@@ -44,6 +50,15 @@ function initializeGame() {
   selectedTab = "top";
   isWardrobeOpen = false;
   showGameOver = false;
+  
+  // 스크롤 변수 초기화
+  scrollOffset = 0;
+  maxScrollOffset = 0;
+  topScrollOffset = 0;
+  maxTopScrollOffset = 0;
+  bottomScrollOffset = 0;
+  maxBottomScrollOffset = 0;
+  
   initializeDragState();
   loadingStartTime = millis();
 
@@ -648,17 +663,18 @@ function drawClothesCategory(clothes, position, itemSize, spacing, categoryName)
   if (clothes.length === 0) return;
   
   let startX, startY, direction, itemsPerRow;
+  let scrollableAreaHeight = height - 200; // 스크롤 가능한 영역 높이
   
   switch(position) {
     case "left":
       startX = 30;
-      startY = height / 2 - (Math.ceil(clothes.length / 2) * (itemSize + spacing)) / 2;
+      startY = 100; // 상단에서 시작
       direction = "grid";
       itemsPerRow = 2;
       break;
     case "right":
       startX = width - 30 - (2 * itemSize) - spacing;
-      startY = height / 2 - (Math.ceil(clothes.length / 2) * (itemSize + spacing)) / 2;
+      startY = 100; // 상단에서 시작
       direction = "grid";
       itemsPerRow = 2;
       break;
@@ -670,7 +686,27 @@ function drawClothesCategory(clothes, position, itemSize, spacing, categoryName)
       break;
   }
   
-  // 카테고리 라벨
+  // 전체 콘텐츠 높이 계산
+  let totalRows = Math.ceil(clothes.length / itemsPerRow);
+  let totalContentHeight = totalRows * (itemSize + spacing);
+  
+  // 카테고리별 스크롤 오프셋 계산
+  let currentScrollOffset = 0;
+  let currentMaxScrollOffset = 0;
+  
+  if (position === "left") { // 상의
+    maxTopScrollOffset = Math.max(0, totalContentHeight - scrollableAreaHeight);
+    topScrollOffset = constrain(topScrollOffset, 0, maxTopScrollOffset);
+    currentScrollOffset = topScrollOffset;
+    currentMaxScrollOffset = maxTopScrollOffset;
+  } else if (position === "right") { // 하의
+    maxBottomScrollOffset = Math.max(0, totalContentHeight - scrollableAreaHeight);
+    bottomScrollOffset = constrain(bottomScrollOffset, 0, maxBottomScrollOffset);
+    currentScrollOffset = bottomScrollOffset;
+    currentMaxScrollOffset = maxBottomScrollOffset;
+  }
+  
+  // 카테고리 라벨 (고정 위치)
   fill(255);
   stroke(0);
   strokeWeight(2);
@@ -678,8 +714,17 @@ function drawClothesCategory(clothes, position, itemSize, spacing, categoryName)
   textAlign(CENTER, CENTER);
   
   if (direction === "grid") {
-    text(categoryName, startX + itemSize + spacing / 2, startY - 40);
+    text(categoryName, startX + itemSize + spacing / 2, 60);
   }
+  
+  // 스크롤된 시작 위치 계산
+  let scrolledStartY = (position === "left" || position === "right") ? 
+                        startY - currentScrollOffset : startY;
+  
+  // 클리핑 영역 설정 (스크롤 가능한 영역만)
+  let clipY = (position === "left" || position === "right") ? 80 : startY;
+  let clipHeight = (position === "left" || position === "right") ? 
+                   scrollableAreaHeight : itemSize + spacing;
   
   // 옷 아이템들 그리기
   for (let i = 0; i < clothes.length; i++) {
@@ -688,48 +733,145 @@ function drawClothesCategory(clothes, position, itemSize, spacing, categoryName)
     let col = i % itemsPerRow;
     
     let itemX = startX + col * (itemSize + spacing);
-    let itemY = startY + row * (itemSize + spacing);
+    let itemY = scrolledStartY + row * (itemSize + spacing);
     
-    // 선택된 옷인지 확인
-    let isSelected = appliedClothes.some(c => c.id === cloth.id);
-    
-    // 호버 감지
-    let isHovered = mouseX > itemX && mouseX < itemX + itemSize &&
-                    mouseY > itemY && mouseY < itemY + itemSize;
-    
-    // 선택된 옷만 테두리 표시
-    if (isSelected) {
-      noFill();
-      stroke(100, 200, 255);
-      strokeWeight(3);
-      rect(itemX, itemY, itemSize, itemSize, 10);
-    } else if (isHovered) {
-      noFill();
-      stroke(255, 255, 255, 150);
-      strokeWeight(2);
-      rect(itemX, itemY, itemSize, itemSize, 10);
-    }
-    
-    // 옷 이미지 표시
-    if (cloth.imageId && 
-        clothImages[selectedSex] && 
-        clothImages[selectedSex][cloth.category] && 
-        clothImages[selectedSex][cloth.category][cloth.imageId]) {
-      let clothImage = clothImages[selectedSex][cloth.category][cloth.imageId];
-      let imgSize = itemSize - 10;
-      let imgX = itemX + 5;
-      let imgY = itemY + 5;
-      
-      image(clothImage, imgX, imgY, imgSize, imgSize);
-    }
-    
-    // 클릭 영역 저장 (이후 클릭 처리용)
+    // 모든 아이템에 대해 클릭 영역 저장 (화면 밖에 있어도)
     cloth._displayInfo = {
       x: itemX,
-      y: itemY,
+      y: itemY, // 스크롤된 실제 Y 위치
       width: itemSize,
-      height: itemSize
+      height: itemSize,
+      // 메타데이터 (스크롤 계산용)
+      baseX: startX + col * (itemSize + spacing), // 원본 X 위치
+      baseY: startY + row * (itemSize + spacing), // 원본 Y 위치 (스크롤 전)
+      position: position, // "left", "right", "bottom"
+      clipY: clipY,
+      clipHeight: clipHeight,
+      isVisible: itemY + itemSize >= clipY && itemY <= clipY + clipHeight
     };
+    
+    // 화면에 보이는 아이템만 그리기
+    if (itemY + itemSize >= clipY && itemY <= clipY + clipHeight) {
+      // 선택된 옷인지 확인
+      let isSelected = appliedClothes.some(c => c.id === cloth.id);
+      
+      // 호버 감지 (클리핑 영역 내에서만)
+      let isHovered = mouseX > itemX && mouseX < itemX + itemSize &&
+                      mouseY > Math.max(itemY, clipY) &&
+                      mouseY < Math.min(itemY + itemSize, clipY + clipHeight);
+      
+      // 선택된 옷만 테두리 표시
+      if (isSelected) {
+        noFill();
+        stroke(100, 200, 255);
+        strokeWeight(3);
+        // 클리핑된 사각형 그리기
+        let visibleY = Math.max(itemY, clipY);
+        let visibleHeight = Math.min(itemY + itemSize, clipY + clipHeight) - visibleY;
+        rect(itemX, visibleY, itemSize, visibleHeight, 10);
+      } else if (isHovered) {
+        noFill();
+        stroke(255, 255, 255, 150);
+        strokeWeight(2);
+        // 클리핑된 사각형 그리기
+        let visibleY = Math.max(itemY, clipY);
+        let visibleHeight = Math.min(itemY + itemSize, clipY + clipHeight) - visibleY;
+        rect(itemX, visibleY, itemSize, visibleHeight, 10);
+      }
+      
+      // 옷 이미지 표시
+      if (cloth.imageId && 
+          clothImages[selectedSex] && 
+          clothImages[selectedSex][cloth.category] && 
+          clothImages[selectedSex][cloth.category][cloth.imageId]) {
+        let clothImage = clothImages[selectedSex][cloth.category][cloth.imageId];
+        let imgSize = itemSize - 10;
+        let imgX = itemX + 5;
+        let imgY = itemY + 5;
+        
+        // 클리핑된 이미지 그리기
+        if (imgY + imgSize > clipY && imgY < clipY + clipHeight) {
+          let visibleImgY = Math.max(imgY, clipY);
+          let visibleImgHeight = Math.min(imgY + imgSize, clipY + clipHeight) - visibleImgY;
+          
+          if (visibleImgHeight > 0) {
+            let srcY = visibleImgY - imgY;
+            let srcHeight = visibleImgHeight;
+            
+            // 원본 이미지의 해당 부분만 그리기
+            let imgSrcY = (srcY / imgSize) * clothImage.height;
+            let imgSrcHeight = (srcHeight / imgSize) * clothImage.height;
+            
+            image(clothImage, imgX, visibleImgY, imgSize, srcHeight, 
+                  0, imgSrcY, clothImage.width, imgSrcHeight);
+          }
+        }
+      }
+    }
+  }
+  
+  // 스크롤바 그리기 (왼쪽/오른쪽 카테고리에만)
+  if ((position === "left" || position === "right") && currentMaxScrollOffset > 0) {
+    drawClothesScrollbar(position, startX, itemSize, spacing, scrollableAreaHeight, currentScrollOffset, currentMaxScrollOffset);
+  }
+}
+
+// 옷 카테고리 스크롤바 그리기
+function drawClothesScrollbar(position, startX, itemSize, spacing, scrollableAreaHeight, currentScrollOffset, currentMaxScrollOffset) {
+  let scrollbarWidth = 8;
+  let scrollbarHeight = scrollableAreaHeight - 20;
+  let scrollbarX, scrollbarY;
+  
+  if (position === "left") {
+    scrollbarX = startX + (2 * itemSize) + spacing + 10;
+    scrollbarY = 90;
+  } else if (position === "right") {
+    scrollbarX = startX - 20;
+    scrollbarY = 90;
+  }
+  
+  // 스크롤바 배경
+  fill(200, 200, 200, 100);
+  noStroke();
+  rect(scrollbarX, scrollbarY, scrollbarWidth, scrollbarHeight, 4);
+  
+  // 스크롤바 핸들
+  if (currentMaxScrollOffset > 0) {
+    let handleHeight = Math.max(20, (scrollableAreaHeight / (scrollableAreaHeight + currentMaxScrollOffset)) * scrollbarHeight);
+    let handleY = scrollbarY + (currentScrollOffset / currentMaxScrollOffset) * (scrollbarHeight - handleHeight);
+    
+    fill(150, 150, 150);
+    rect(scrollbarX + 1, handleY, scrollbarWidth - 2, handleHeight, 4);
+  }
+}
+
+// 마우스 휠 이벤트 처리 수정
+function mouseWheel(event) {
+  if (isWardrobeOpen && maxScrollOffset > 0) {
+    // 기존 옷장 모달 스크롤
+    let scrollSpeed = 30;
+    scrollOffset += event.delta * scrollSpeed;
+    scrollOffset = constrain(scrollOffset, 0, maxScrollOffset);
+    return false;
+  } else if (gameState === "game" && !isGameCompleted) {
+    // 옷 영역 스크롤 처리
+    let scrollSpeed = 30;
+    
+    // 마우스 위치에 따라 어느 영역을 스크롤할지 결정
+    let leftAreaWidth = 30 + (2 * 120) + 30 + 50; // 왼쪽 영역 범위
+    let rightAreaStart = width - leftAreaWidth;
+    
+    if (mouseX < leftAreaWidth && maxTopScrollOffset > 0) {
+      // 상의(왼쪽) 스크롤
+      topScrollOffset += event.delta * scrollSpeed;
+      topScrollOffset = constrain(topScrollOffset, 0, maxTopScrollOffset);
+      return false;
+    } else if (mouseX > rightAreaStart && maxBottomScrollOffset > 0) {
+      // 하의(오른쪽) 스크롤
+      bottomScrollOffset += event.delta * scrollSpeed;
+      bottomScrollOffset = constrain(bottomScrollOffset, 0, maxBottomScrollOffset);
+      return false;
+    }
   }
 }
 
