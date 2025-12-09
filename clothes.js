@@ -813,8 +813,8 @@ function generateScoreMessage(
   wrongCount,
   selectedClothes
 ) {
-  // 2개 모두 선택했는지 확인 (상의, 하의)
-  if (selectedClothes.length === 2) {
+  // 3개 모두 선택했는지 확인 (상의, 하의, 신발)
+  if (selectedClothes.length === 3) {
     if (wrongCount === 0) {
       return "완벽해요! 계절에 완벽하게 맞는 코디입니다! (" + score + "점)";
     } else if (correctCount > wrongCount) {
@@ -823,6 +823,6 @@ function generateScoreMessage(
       return "아쉽네요. 계절을 더 고려해보세요. (" + score + "점)";
     }
   } else {
-    return "상의와 하의를 모두 선택해주세요.";
+    return "상의, 하의, 신발을 모두 선택해주세요.";
   }
 }

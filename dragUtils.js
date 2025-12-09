@@ -134,9 +134,11 @@ function findClothAtPosition(x, y) {
  * 마네킹 영역에 있는지 확인
  * @param {number} x - X 좌표
  * @param {number} y - Y 좌표
+ * @param {Object} cloth - 옷 객체 (사용하지 않음, 모든 옷이 동일한 영역 사용)
  * @returns {boolean} 마네킹 영역에 있으면 true
  */
-function isPositionOverMannequin(x, y) {
+function isPositionOverMannequin(x, y, cloth = null) {
+  // 모든 옷(신발 포함)이 전체 마네킹 영역에서 드롭 가능
   const mannequinArea = getMannequinDropArea();
 
   return (
@@ -148,20 +150,41 @@ function isPositionOverMannequin(x, y) {
 }
 
 /**
- * 마네킹 드롭 영역 좌표 계산
+ * 마네킹 드롭 영역 좌표 계산 (매우 넓은 영역)
  * @returns {Object} 마네킹 영역의 좌표들
  */
 function getMannequinDropArea() {
   const centerX = width / 2;
   const centerY = height / 2;
-  const areaWidth = 200;
-  const areaHeight = 300;
+  const areaWidth = width * 0.6;   // 화면 너비의 60%
+  const areaHeight = height * 0.8;  // 화면 높이의 80%
 
   return {
     left: centerX - areaWidth / 2,
     right: centerX + areaWidth / 2,
     top: centerY - areaHeight / 2,
     bottom: centerY + areaHeight / 2,
+  };
+}
+
+/**
+ * 신발 드롭 영역 좌표 계산 (마네킹 발 부분만)
+ * @returns {Object} 신발 드롭 영역의 좌표들
+ */
+function getShoesDropArea() {
+  const centerX = width / 2;
+  const centerY = height / 2;
+  const areaWidth = 200;
+  const areaHeight = 300;
+  
+  // 신발 드롭 영역을 마네킹의 발 부분(최하단)에만 위치
+  const shoesAreaHeight = 80;  // 발 부분만 커버하는 작은 영역
+
+  return {
+    left: centerX - areaWidth / 2,
+    right: centerX + areaWidth / 2,
+    top: centerY + areaHeight / 2 - 30,  // 마네킹 하단에서 30px 위부터
+    bottom: centerY + areaHeight / 2 + 50,  // 마네킹 하단에서 50px 아래까지
   };
 }
 
@@ -178,7 +201,7 @@ function handleClothDrop(x, y, cloth) {
   // 마네킹에 입힌 옷을 드래그해서 벗기는 경우
   if (appliedClothes.includes(cloth)) {
     // 마네킹 밖으로 드래그하면 옷 벗기기
-    if (!isPositionOverMannequin(x, y)) {
+    if (!isPositionOverMannequin(x, y, cloth)) {
       appliedClothes = appliedClothes.filter(c => c.id !== cloth.id);
       return true;
     }
@@ -186,7 +209,7 @@ function handleClothDrop(x, y, cloth) {
   }
   
   // 옷장의 옷을 마네킹으로 드래그하는 경우
-  if (!isPositionOverMannequin(x, y)) {
+  if (!isPositionOverMannequin(x, y, cloth)) {
     return false;
   }
 
