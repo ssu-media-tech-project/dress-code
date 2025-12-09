@@ -80,7 +80,7 @@ function mousePressed() {
   }
 }
 
-3단계: 진행 ➡️
+3단계: 진행
 
 function mouseDragged() {
   if (isDragging && draggedItem) {
@@ -89,7 +89,7 @@ function mouseDragged() {
   }
 }
 
-4단계: 완료 ✅
+4단계: 완료
 
 function mouseReleased() {
   if (isDragging && isValidDropZone(mouseX, mouseY)) {
@@ -98,71 +98,8 @@ function mouseReleased() {
   resetDragState();
 }
 
-🎮 실제 게임 적용 예시
 
-옷입히기 게임 구현
-
-// 1. 옷 선택
-function mousePressed() {
-  selectedCloth = findClothAt(mouseX, mouseY);
-}
-
-// 2. 드래그
-function mouseDragged() {
-  if (selectedCloth) {
-    drawClothFollowMouse();
-  }
-}
-
-// 3. 마네킹에 드롭
-function mouseReleased() {
-  if (selectedCloth && isOverMannequin(mouseX, mouseY)) {
-    wearCloth(selectedCloth);
-    gameComplete = checkAllClothesWorn();
-  }
-}
-
-🛠️ 고급 기능들
-
-스냅 효과 (자석처럼 붙기)
-
-function mouseReleased() {
-  let nearestSlot = findNearestSlot(mouseX, mouseY);
-  if (distance < SNAP_DISTANCE) {
-    snapToSlot(draggedItem, nearestSlot);
-  }
-}
-
-드래그 제약 (특정 영역에서만)
-
-function mouseDragged() {
-  if (isDragging) {
-    let constrainedX = constrain(mouseX, minX, maxX);
-    let constrainedY = constrain(mouseY, minY, maxY);
-    updatePosition(constrainedX, constrainedY);
-  }
-}
-
-멀티 드래그 (여러 개 동시에)
-
-let selectedItems = [];
-
-function mousePressed() {
-  if (keyIsPressed && key === 'Shift') {
-    selectedItems.push(findItemAt(mouseX, mouseY));
-  }
-}
-
-📊 기능 요약표
-
-| 단계  | 함수              | 역할       | 핵심 코드                            |
-|-----|-----------------|----------|----------------------------------|
-| 선택  | mousePressed()  | 객체 선택    | item = findAt(mouseX, mouseY)    |
-| 이동  | mouseDragged()  | 위치 업데이트  | item.x = mouseX; item.y = mouseY |
-| 완료  | mouseReleased() | 드롭 처리    | if(isOver(target)) apply()       |
-| 감지  | findObjectAt()  | 충돌 검사    | x > obj.x && x < obj.x + w       |
-| 검증  | isOverTarget()  | 드롭 가능 여부 | return inBounds(x, y)            |
-
+```js
 시각적 피드백
 
 function drawDraggedItem() {
@@ -177,6 +114,20 @@ function drawDraggedItem() {
   image(item.image, mouseX, mouseY);
   noTint();
 }
+```
+
+
+
+기능 정리
+
+| 단계  | 함수              | 역할       | 핵심 코드                            |
+|-----|-----------------|----------|----------------------------------|
+| 선택  | mousePressed()  | 객체 선택    | item = findAt(mouseX, mouseY)    |
+| 이동  | mouseDragged()  | 위치 업데이트  | item.x = mouseX; item.y = mouseY |
+| 완료  | mouseReleased() | 드롭 처리    | if(isOver(target)) apply()       |
+| 감지  | findObjectAt()  | 충돌 검사    | x > obj.x && x < obj.x + w       |
+| 검증  | isOverTarget()  | 드롭 가능 여부 | return inBounds(x, y)            |
+
 
 주요 포인트
 
@@ -194,4 +145,4 @@ function drawDraggedItem() {
 - 큰 이미지는 미리 리사이즈
 - 드롭 영역을 명확히 정의
 
-```
+
