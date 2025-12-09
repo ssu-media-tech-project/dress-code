@@ -466,23 +466,28 @@ function drawSelectedClothesPreview(selectedClothes) {
 
 // 게임 종료 화면 그리기
 function drawGameOver(logoImage) {
-  // 배경색 #0f0f0f
+  // 기본 배경
   background('#0f0f0f');
   
-  // 로고 표시
-  if (logoImage && logoImage.width > 0) {
-    let logoWidth = width * 0.25;
-    let logoHeight = (logoImage.height / logoImage.width) * logoWidth;
-    let logoX = (width - logoWidth) / 2;
-    let logoY = (height - logoHeight) / 2;
-    image(logoImage, logoX, logoY, logoWidth, logoHeight);
+  // AI 정보 이미지를 축소해서 표시
+  if (aiInfoImage && aiInfoImage.width > 0) {
+    // 이미지 크기를 화면의 80%로 축소
+    let scale = 0.8;
+    let imgWidth = width * scale;
+    let imgHeight = (aiInfoImage.height / aiInfoImage.width) * imgWidth;
+    
+    // 화면 중앙에 배치
+    let imgX = (width - imgWidth) / 2;
+    let imgY = (height - imgHeight) / 2;
+    
+    image(aiInfoImage, imgX, imgY, imgWidth, imgHeight);
   }
   
   // 다시 하기 버튼
   let btnWidth = 200;
   let btnHeight = 60;
   let btnX = width / 2 - btnWidth / 2;
-  let btnY = height * 0.8;
+  let btnY = height * 0.9;
   
   // 호버 감지
   let isHovered = mouseX > btnX && mouseX < btnX + btnWidth &&
@@ -507,4 +512,27 @@ function drawGameOver(logoImage) {
   textStyle(NORMAL);
   
   return { btnX, btnY, btnWidth, btnHeight };
+}
+
+
+// 정보 박스 그리기
+function drawInfoBox(x, y, w, h, title, subtitle) {
+  // 박스 배경
+  fill(60, 60, 60);
+  stroke(120, 120, 120);
+  strokeWeight(2);
+  rect(x, y, w, h, 10);
+  
+  // 제목
+  fill(255, 255, 255);
+  textSize(14);
+  textStyle(BOLD);
+  textAlign(CENTER, CENTER);
+  text(title, x + w/2, y + h/2 - 10);
+  
+  // 부제목
+  fill(200, 200, 200);
+  textSize(12);
+  textStyle(NORMAL);
+  text(subtitle, x + w/2, y + h/2 + 10);
 }

@@ -8,6 +8,7 @@ let logoImage = null;
 let selectSeasonImage = null;
 let backgroundImage = null;
 let closetImage = null;
+let aiInfoImage = null;
 
 // 레트로 배경 패턴 위치 (고정)
 let retroPattern = [];
@@ -28,6 +29,7 @@ function preload() {
   selectSeasonImage = loadImage("image/select-season.png");
   backgroundImage = loadImage("image/background.png");
   closetImage = loadImage("image/closet.png");
+  aiInfoImage = loadImage("image/end.png");
 
   // 옷 이미지 로드
   loadClothImages();
